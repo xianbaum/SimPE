@@ -61,6 +61,10 @@
     <Compile Include="CpfItem.cs" />
     <Compile Include="CpfUI.cs" />
     <Compile Include="CpfWrapper.cs" />
+    <Compile Include="Creg3.cs" />
+    <Compile Include="Creg3UI.cs" />
+    <Compile Include="CregUI.cs" />
+    <Compile Include="CregWrapper.cs" />
     <Compile Include="DefaultWrapperFactory.cs" />
     <Compile Include="Elements.cs" />
     <Compile Include="Elements2.cs" />

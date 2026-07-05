@@ -48,6 +48,7 @@ namespace SimPe.PackedFiles.Wrapper.Factory
 											  new SimPe.PackedFiles.Wrapper.Cpf(),
 											  new SimPe.PackedFiles.Wrapper.FamilyTies(this.LinkedProvider.SimNameProvider),
 											  new SimPe.PackedFiles.Wrapper.Nref(),
+										  	  new SimPe.PackedFiles.Wrapper.Creg(),
 											  new SimPe.PackedFiles.Wrapper.Objd(this.LinkedProvider.OpcodeProvider),
 											  new SimPe.Plugin.Glob(),
 											  new SimPe.PackedFiles.Wrapper.ObjLua()
@@ -62,6 +63,7 @@ namespace SimPe.PackedFiles.Wrapper.Factory
 											  new SimPe.PackedFiles.Wrapper.Fami(this.LinkedProvider.SimNameProvider),
 											  new SimPe.PackedFiles.Wrapper.Cpf(),
 											  new SimPe.PackedFiles.Wrapper.Nref(),
+										 	  new SimPe.PackedFiles.Wrapper.Creg(),
 											  new SimPe.PackedFiles.Wrapper.ExtObjd(),
 											  new SimPe.Plugin.Glob(),
 											  new SimPe.PackedFiles.Wrapper.ObjLua()

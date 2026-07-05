@@ -81,6 +81,7 @@ namespace SimPe.Plugin.Tool.Dockable
 									new FinderDock(),
 									new ActionCheckFiletable(),
 									new ActionBuildPhpGuidList(),
+									new ActionBuildGlobList(),
                                     new DebugDock()
 									//,new TestListener()
                         };
@@ -100,7 +101,8 @@ namespace SimPe.Plugin.Tool.Dockable
 								    new HexDockTool(rd),
 									new FinderDock(),
 									new ActionCheckFiletable(),
-									new ActionBuildPhpGuidList()
+									new ActionBuildPhpGuidList(),
+									new ActionBuildGlobList()
                         };
                         return tools;
                     }

@@ -21,6 +21,7 @@
     <ProjectReference Include="../SimPe Workspace Helper/SimPe Workspace Helper.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionBuildGLOBList.cs" />
     <Compile Include="ActionBuildPhpGUIDList.cs" />
     <Compile Include="ActionCheckFiletable.cs" />
     <Compile Include="ActionReloadFiletable.cs" />
