@@ -1,0 +1,9 @@
+<Project>
+  <Target Name="DeployPluginToPluginsFolder"
+          AfterTargets="Build"
+          Condition="$(AssemblyName.EndsWith('.plugin'))">
+    <Copy SourceFiles="$(TargetPath)"
+          DestinationFolder="$(ReleaseDir)Plugins"
+          SkipUnchangedFiles="true" />
+  </Target>
+</Project>
