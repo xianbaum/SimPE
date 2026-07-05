@@ -14,10 +14,6 @@
       <Private>false</Private>
     </Reference>
     <ProjectReference Include="../NetDocks/NetDocks.csproj" />
-    <Reference Include="SandDock">
-      <HintPath>$(ReleaseDir)SandDock.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
     <Reference Include="simpe.cache">
       <HintPath>$(ReleaseDir)simpe.cache.dll</HintPath>
       <Private>false</Private>

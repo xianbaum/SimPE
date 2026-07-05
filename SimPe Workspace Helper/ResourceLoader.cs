@@ -28,7 +28,7 @@ namespace SimPe
 	/// </summary>
 	public class ResourceLoader
 	{
-		TD.SandDock.TabControl dc;
+		Ambertation.Windows.Forms.TabControl dc;
 		LoadedPackage pkg;
 
 		/// <summary>
@@ -54,7 +54,7 @@ namespace SimPe
         }
         public void RefreshUI(SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii)
         {
-            TD.SandDock.DockControl doc = this.GetDocument(fii);
+            Ambertation.Windows.Forms.DockPanel doc = this.GetDocument(fii);
             if (doc == null) return;
 
             SimPe.Interfaces.Plugin.IFileWrapper wrp = (SimPe.Interfaces.Plugin.IFileWrapper)doc.Tag;
@@ -70,7 +70,7 @@ namespace SimPe
 		/// </summary>
 		/// <param name="dc">The document Container that receives the Plugins</param>
 		/// <param name="lp">The Container for the currently loaded package</param>
-		public ResourceLoader(TD.SandDock.TabControl dc, LoadedPackage lp)
+		public ResourceLoader(Ambertation.Windows.Forms.TabControl dc, LoadedPackage lp)
 		{
 			this.dc = dc;
 			pkg = lp;
@@ -141,7 +141,7 @@ namespace SimPe
 			{
 				if (reload) 
 				{
-					TD.SandDock.DockControl doc = this.GetDocument(fii);
+					Ambertation.Windows.Forms.DockPanel doc = this.GetDocument(fii);
 					if (doc==null) return false;
 
 					SimPe.Interfaces.Plugin.IFileWrapper wrp = (SimPe.Interfaces.Plugin.IFileWrapper)doc.Tag;
@@ -199,12 +199,12 @@ namespace SimPe
 				//do not open Wrappers for deleted Descriptors
 				if (wrapper.FileDescriptor!=null) if (wrapper.FileDescriptor.MarkForDelete) return false;
 
-				TD.SandDock.DockControl doc = null;
+				Ambertation.Windows.Forms.DockPanel doc = null;
 				bool add = !overload;
-				if (overload) doc = dc.SelectedPage;				
+				if (overload) doc = dc.Highlight;
 				if (doc == null) {
 					add = true; 
-					doc = new TD.SandDock.TabPage(); 
+					doc = new Ambertation.Windows.Forms.TabPage();
 					doc.AllowClose=true; 
 					doc.AllowDockCenter=true;
 				}
@@ -232,7 +232,7 @@ namespace SimPe
                     doc.AllowDockCenter = true;
                     doc.AllowCollapse = true;
 
-                    if (add) dc.TabPages.Add(doc);
+                    if (add) dc.AddPage((Ambertation.Windows.Forms.TabPage)doc);
                     pan.Parent = doc;
                     pan.Left = 0;
                     pan.Top = 0;
@@ -244,10 +244,8 @@ namespace SimPe
                     //pan.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
 
 
-                    if (add) doc.Closing += new TD.SandDock.DockControlClosingEventHandler(CloseResourceDocument);
-                    dc.SelectedPage = (TD.SandDock.TabPage)doc;
-                    doc.Manager = dc.Manager;
-                    doc.LayoutSystem.LockControls = false;
+                    if (add) doc.Closing += new Ambertation.Windows.Forms.DockPanel.ClosingHandler(CloseResourceDocument);
+                    doc.EnsureVisible();
 
 
                     loaded[fii] = doc;
@@ -314,13 +312,10 @@ namespace SimPe
 
 			if (loaded.ContainsKey(fii))
 			{
-				TD.SandDock.DockControl doc = (TD.SandDock.DockControl)loaded[fii];					
+				Ambertation.Windows.Forms.DockPanel doc = (Ambertation.Windows.Forms.DockPanel)loaded[fii];					
 
 				if (doc.Parent == null ) return true;
-				if (doc.Parent is TD.SandDock.TabControl)
-					((TD.SandDock.TabControl)doc.Parent).SelectedPage = (TD.SandDock.TabPage)doc;
-				else 
-					doc.LayoutSystem.SelectedControl = doc;				
+				doc.EnsureVisible();				
 
 				return true;
 			}
@@ -333,9 +328,9 @@ namespace SimPe
 		/// </summary>
 		/// <param name="fii">The Resource you want to select</param>
 		/// <returns>the Document that contains the PluginView for the passed Resource (null if none)</returns>
-		public TD.SandDock.DockControl GetDocument(SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii)
+		public Ambertation.Windows.Forms.DockPanel GetDocument(SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii)
 		{
-			if (loaded.ContainsKey(fii)) return (TD.SandDock.DockControl)loaded[fii];	
+			if (loaded.ContainsKey(fii)) return (Ambertation.Windows.Forms.DockPanel)loaded[fii];	
 			return null;
 		}
 
@@ -344,9 +339,9 @@ namespace SimPe
 		/// </summary>
 		/// <param name="pfd">The Resource you want to select</param>
 		/// <returns>the Document that contains the PluginView for the passed Resource (null if none)</returns>
-		public TD.SandDock.DockControl GetDocument(SimPe.Interfaces.Files.IPackedFileDescriptor pfd)
+		public Ambertation.Windows.Forms.DockPanel GetDocument(SimPe.Interfaces.Files.IPackedFileDescriptor pfd)
 		{
-			foreach (TD.SandDock.DockControl doc in loaded.Values) 
+			foreach (Ambertation.Windows.Forms.DockPanel doc in loaded.Values) 
 			{
 				SimPe.Interfaces.Plugin.IFileWrapper wrapper = (SimPe.Interfaces.Plugin.IFileWrapper)doc.Tag;
 				if (wrapper!=null) 
@@ -360,7 +355,7 @@ namespace SimPe
 		/// </summary>
 		/// <param name="doc"></param>
 		/// <returns></returns>
-		public SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem GetResourceFromDocument(TD.SandDock.DockControl doc)
+		public SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem GetResourceFromDocument(Ambertation.Windows.Forms.DockPanel doc)
 		{
 			SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii = null;
 			foreach (SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem localfii in loaded.Keys) 
@@ -394,7 +389,7 @@ namespace SimPe
 		/// </summary>
 		/// <param name="doc"></param>
 		/// <returns>true, if the Document was closed</returns>
-		public bool CloseDocument(TD.SandDock.DockControl doc)
+		public bool CloseDocument(Ambertation.Windows.Forms.DockPanel doc)
 		{			
 			SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii = GetResourceFromDocument(doc);
 			if (fii!=null) return CloseDocument(fii);
@@ -413,7 +408,7 @@ namespace SimPe
 		bool CloseDocument(SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii)
 		{
 			bool remain = false;
-			TD.SandDock.DockControl doc = (TD.SandDock.DockControl)loaded[fii];
+			Ambertation.Windows.Forms.DockPanel doc = (Ambertation.Windows.Forms.DockPanel)loaded[fii];
 			if (doc!=null) doc.Close();	
 			else RemoveResource(fii, null);
 
@@ -453,7 +448,7 @@ namespace SimPe
 			bool commited = true;
 			foreach (SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem k in loaded.Keys) 
 			{
-				TD.SandDock.DockControl doc = GetDocument(k);
+				Ambertation.Windows.Forms.DockPanel doc = GetDocument(k);
 				if (doc!=null) 
 				{
 					SimPe.Interfaces.Plugin.IFileWrapper wrapper = (SimPe.Interfaces.Plugin.IFileWrapper)doc.Tag;
@@ -496,7 +491,7 @@ namespace SimPe
 		/// </summary>
 		/// <param name="doc">The document presenting the Wrapper</param>
 		/// <returns>true, if the Wrapper was unloaded completley (false if User decided to answer with Cancel)</returns>
-		bool UnloadWrapper(TD.SandDock.DockControl doc)
+		bool UnloadWrapper(Ambertation.Windows.Forms.DockPanel doc)
 		{
 			SimPe.Interfaces.Plugin.IFileWrapper wrapper = (SimPe.Interfaces.Plugin.IFileWrapper)doc.Tag;
 			bool multi = wrapper.AllowMultipleInstances;
@@ -578,23 +573,23 @@ namespace SimPe
 		/// <summary>
 		/// this is called whenever a Document gets closed
 		/// </summary>
-		/// <param name="sender">a <see cref="TD.SandDock.DockControl"/> Object</param>
+		/// <param name="sender">a <see cref="Ambertation.Windows.Forms.DockPanel"/> Object</param>
 		/// <param name="e">the Cancel Arguments</param>
-		private void CloseResourceDocument(object sender, TD.SandDock.DockControlClosingEventArgs e)
+		private void CloseResourceDocument(object sender, Ambertation.Windows.Forms.DockPanel.DockPanelClosingEvent e)
 		{
 
-			SimPe.Interfaces.Plugin.IFileWrapper wrapper = (SimPe.Interfaces.Plugin.IFileWrapper)((TD.SandDock.DockControl)sender).Tag;
+			SimPe.Interfaces.Plugin.IFileWrapper wrapper = (SimPe.Interfaces.Plugin.IFileWrapper)((Ambertation.Windows.Forms.DockPanel)sender).Tag;
 			bool multi = wrapper.AllowMultipleInstances;
 			e.Cancel = !UnloadWrapper(wrapper);	
 			
 
 			if (!e.Cancel) 
 			{
-				SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii = GetResourceFromDocument((TD.SandDock.DockControl)sender);				
+				SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii = GetResourceFromDocument((Ambertation.Windows.Forms.DockPanel)sender);				
 				RemoveResource(fii, wrapper);			
 				
-				if (multi) DisposeSubControls(((TD.SandDock.DockControl)sender).Controls);				
-				((TD.SandDock.DockControl)sender).Controls.Clear();													
+				if (multi) DisposeSubControls(((Ambertation.Windows.Forms.DockPanel)sender).Controls);				
+				((Ambertation.Windows.Forms.DockPanel)sender).Controls.Clear();													
 
 				UnlinkWrapper(wrapper);
 			}
@@ -608,7 +603,7 @@ namespace SimPe
 		private void DeletedDescriptor(object sender, EventArgs e)
 		{
 			SimPe.Packages.PackedFileDescriptor pfd = (SimPe.Packages.PackedFileDescriptor) sender;	
-			TD.SandDock.DockControl doc = this.GetDocument(pfd);
+			Ambertation.Windows.Forms.DockPanel doc = this.GetDocument(pfd);
 			if (doc!=null) this.CloseDocument(doc);
 		}
 
@@ -619,7 +614,7 @@ namespace SimPe
 		private void FileDescriptor_ChangedUserData(SimPe.Interfaces.Files.IPackedFileDescriptor sender)
 		{
 			SimPe.Packages.PackedFileDescriptor pfd = (SimPe.Packages.PackedFileDescriptor) sender;	
-			TD.SandDock.DockControl doc = this.GetDocument(pfd);
+			Ambertation.Windows.Forms.DockPanel doc = this.GetDocument(pfd);
 			if (doc!=null) 
 			{
 				SimPe.Interfaces.Plugin.IFileWrapper wrapper = (SimPe.Interfaces.Plugin.IFileWrapper)doc.Tag;

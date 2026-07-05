@@ -8,17 +8,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <ProjectReference Include="../AdvancedForms/AdvancedForms.csproj" />
-    <Reference Include="Eyefinder">
-      <HintPath>$(ReleaseDir)Eyefinder.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
     <ProjectReference Include="../GDF/GDF.csproj" />
     <ProjectReference Include="../NetDocks/NetDocks.csproj" />
     <ProjectReference Include="../_PJSE/pjse Coder/SimPe pjse coder.csproj" />
-    <Reference Include="SandDock">
-      <HintPath>$(ReleaseDir)SandDock.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
     <ProjectReference Include="../SimPe 3IDR/SimPe 3IDR.csproj" />
     <ProjectReference Include="../SimPe Clst/SimPe Clst.csproj" />
     <ProjectReference Include="../SimPe Commandline/SimPe Commandline.csproj" />
@@ -37,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="About.cs" />
+    <Compile Include="HeaderControl.cs" />
     <Compile Include="AbstractActionDefault.cs" />
     <Compile Include="ActionAdd.cs" />
     <Compile Include="ActionClone.cs" />

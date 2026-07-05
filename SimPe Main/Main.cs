@@ -283,9 +283,9 @@ namespace SimPe
 
 		private void dc_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			if (e.Button==MouseButtons.Middle && Helper.WindowsRegistry.FirefoxTabbing && dc.SelectedPage!=null) 
+			if (e.Button==MouseButtons.Middle && Helper.WindowsRegistry.FirefoxTabbing && dc.Highlight!=null) 
 			{
-				resloader.CloseDocument(dc.SelectedPage);
+				resloader.CloseDocument(dc.Highlight);
 			}
 		}		
 		
@@ -377,25 +377,26 @@ namespace SimPe
             doc.TabText = "Container";
 			doc.AutoScrollMinSize = dcPlugin.AutoScrollMinSize;			
 
-			TD.SandDock.TabControl dc = new TD.SandDock.TabControl();
-			dc.Manager = this.dc.Manager;
+			Ambertation.Windows.Forms.TabControl dc = new Ambertation.Windows.Forms.TabControl();
+			dc.Manager = dc;
             dc.Text = "New Container";
 			dc.Parent = doc;
-			dc.Dock = DockStyle.Fill;			
+			dc.Dock = DockStyle.Fill;
 		}
 
         private void CloseAdditionalDocContainer(object sender, DockPanel.DockPanelClosingEvent e)
 		{
-			if (sender is TD.SandDock.DockControl) 
+			if (sender is Ambertation.Windows.Forms.DockPanel)
 			{
-				TD.SandDock.DockControl doc = (TD.SandDock.DockControl)sender;
-				if (doc.Controls[0] is TD.SandDock.TabControl) 
+				Ambertation.Windows.Forms.DockPanel doc = (Ambertation.Windows.Forms.DockPanel)sender;
+				if (doc.Controls.Count > 0 && doc.Controls[0] is Ambertation.Windows.Forms.TabControl)
 				{
-					TD.SandDock.TabControl dc = (TD.SandDock.TabControl)doc.Controls[0];
+					Ambertation.Windows.Forms.TabControl dc = (Ambertation.Windows.Forms.TabControl)doc.Controls[0];
 					bool closed = true;
-					for (int i=dc.TabPages.Count-1; i>=0; i--) 
-					{						
-						TD.SandDock.DockControl d = dc.TabPages[i];
+					System.Collections.Generic.List<Ambertation.Windows.Forms.DockPanel> pages = dc.GetDockedPanels();
+					for (int i=pages.Count-1; i>=0; i--)
+					{
+						Ambertation.Windows.Forms.DockPanel d = pages[i];
 						if (!resloader.CloseDocument(d)) closed = false;;
 					}
 					e.Cancel = !closed;
@@ -553,10 +554,6 @@ namespace SimPe
 			}
 		}
 
-		private void sdm_DockControlActivated(object sender, TD.SandDock.DockControlEventArgs e)
-		{
-			if (!e.DockControl.Collapsed) lv.BringToFront();
-		}	
 
 		private void Activate_miSaveCopyAs(object sender, System.EventArgs e)
 		{

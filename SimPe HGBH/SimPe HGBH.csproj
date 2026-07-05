@@ -14,8 +14,8 @@
       <HintPath>$(ReleaseDir)graphcontrol.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="SandDock">
-      <HintPath>$(ReleaseDir)SandDock.dll</HintPath>
+    <Reference Include="NetDocks">
+      <HintPath>$(ReleaseDir)NetDocks.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="simpe.3idr">

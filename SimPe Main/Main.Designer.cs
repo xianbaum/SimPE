@@ -96,7 +96,7 @@ namespace SimPe
         private TextBox tbGrp;
         private TextBox tbRcolName;
         private ComboBox cbsemig;
-        private TD.SandDock.TabControl dc;
+        private Ambertation.Windows.Forms.TabControl dc;
         private DockManager manager;
         private DockPanel dcPlugin;
         private DockPanel dcAction;
@@ -168,7 +168,7 @@ namespace SimPe
             this.xpLinkedLabelIcon2 = new System.Windows.Forms.LinkLabel();
             this.xpLinkedLabelIcon1 = new System.Windows.Forms.LinkLabel();
             this.dcPlugin = new Ambertation.Windows.Forms.DockPanel();
-            this.dc = new TD.SandDock.TabControl();
+            this.dc = new Ambertation.Windows.Forms.TabControl();
             this.toolBar1 = new System.Windows.Forms.ToolStrip();
             this.biNew = new System.Windows.Forms.ToolStripButton();
             this.biOpen = new System.Windows.Forms.ToolStripButton();
@@ -610,8 +610,6 @@ namespace SimPe
             // dc
             // 
             resources.ApplyResources(this.dc, "dc");
-            this.dc.LayoutSystem = new TD.SandDock.SplitLayoutSystem(250, 400, System.Windows.Forms.Orientation.Horizontal, new TD.SandDock.LayoutSystemBase[] {
-            ((TD.SandDock.LayoutSystemBase)(new TD.SandDock.DocumentLayoutSystem(903, 373, new TD.SandDock.DockControl[0], null)))});
             this.dc.Name = "dc";
             this.dc.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dc_MouseUp);
             // 

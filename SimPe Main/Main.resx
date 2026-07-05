@@ -1000,7 +1000,7 @@
     <value>dc</value>
   </data>
   <data name="&gt;&gt;dc.Type" xml:space="preserve">
-    <value>TD.SandDock.TabControl, SandDock, Version=2.0.2.1, Culture=neutral, PublicKeyToken=75b7ec17dd7c14c3</value>
+    <value>Ambertation.Windows.Forms.TabControl, NetDocks, Version=1.0.2983.24895, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;dc.Parent" xml:space="preserve">
     <value>dcPlugin</value>

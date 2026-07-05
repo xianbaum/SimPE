@@ -35,7 +35,7 @@ namespace SimPe
 		internal PluginManager(
             ToolStripMenuItem toolmenu, 
 			ToolStrip tootoolbar,
-			TD.SandDock.TabControl dc, 
+			Ambertation.Windows.Forms.TabControl dc,
 			LoadedPackage lp,
             booby.TaskBox defaultactiontaskbox,
             ContextMenuStrip defaultactionmenu,

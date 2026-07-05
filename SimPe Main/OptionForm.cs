@@ -369,7 +369,7 @@ namespace SimPe
             return System.Drawing.Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.disabled.png"));
         }
 
-        public void SetPanel(SimPe.Interfaces.IWrapper wrapper, TD.Eyefinder.HeaderControl pn)
+        public void SetPanel(SimPe.Interfaces.IWrapper wrapper, SimPe.Windows.Forms.HeaderControl pn)
         {
             if (wrapper.Priority < 0)
             {
@@ -384,7 +384,7 @@ namespace SimPe
             pn.Text = "     " + pn.Text;
         }
 
-        public Image GetShrinkImage(TD.Eyefinder.HeaderControl pn)
+        public Image GetShrinkImage(SimPe.Windows.Forms.HeaderControl pn)
         {
             if (pn.Height == pn.DisplayRectangle.Top + 1)
             {
@@ -416,14 +416,14 @@ namespace SimPe
 
             const int imgwidth = 22;
             int top = 4 + index * (height + 4);
-            TD.Eyefinder.HeaderControl pn = new TD.Eyefinder.HeaderControl();
+            SimPe.Windows.Forms.HeaderControl pn = new SimPe.Windows.Forms.HeaderControl();
             pn.Parent = cnt;
             pn.Top = top;
             pn.Left = 4;
             pn.Width = cnt.Width - System.Windows.Forms.SystemInformation.VerticalScrollBarWidth - 2 - 2 * pn.Left;
             pn.Height = height;
             pn.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
-            pn.HeaderStyle = TD.Eyefinder.HeaderStyle.SubHeading;
+            pn.HeaderStyle = SimPe.Windows.Forms.HeaderStyle.SubHeading;
             pn.Click += new EventHandler(pn_Click);
             pn.LostFocus += new EventHandler(pn_LostFocus);
             pn.GotFocus += new EventHandler(pn_Focused);
@@ -716,22 +716,22 @@ namespace SimPe
 
         private void pn_Click(object sender, EventArgs e)
         {
-            if (sender is TD.Eyefinder.HeaderControl)
+            if (sender is SimPe.Windows.Forms.HeaderControl)
             {
-                TD.Eyefinder.HeaderControl pn = (TD.Eyefinder.HeaderControl)sender;
+                SimPe.Windows.Forms.HeaderControl pn = (SimPe.Windows.Forms.HeaderControl)sender;
                 pn.Focus();
             }
             else if (sender is Control)
             {
-                TD.Eyefinder.HeaderControl pn = (TD.Eyefinder.HeaderControl)((Control)sender).Parent;
+                SimPe.Windows.Forms.HeaderControl pn = (SimPe.Windows.Forms.HeaderControl)((Control)sender).Parent;
                 pn.Focus();
             }
         }
 
-        TD.Eyefinder.HeaderControl lastpn;
+        SimPe.Windows.Forms.HeaderControl lastpn;
         private void pn_Focused(object sender, EventArgs e)
         {
-            TD.Eyefinder.HeaderControl pn = (TD.Eyefinder.HeaderControl)sender;
+            SimPe.Windows.Forms.HeaderControl pn = (SimPe.Windows.Forms.HeaderControl)sender;
             pn.BackColor = SystemColors.Window;
             pn.Font = new Font(pn.Font.Name, pn.Font.Size, FontStyle.Bold, pn.Font.Unit);
 
@@ -744,7 +744,7 @@ namespace SimPe
 
         private void pn_LostFocus(object sender, EventArgs e)
         {
-            TD.Eyefinder.HeaderControl pn = (TD.Eyefinder.HeaderControl)sender;
+            SimPe.Windows.Forms.HeaderControl pn = (SimPe.Windows.Forms.HeaderControl)sender;
             pn.BackColor = SystemColors.ControlLight;
             pn.Font = new Font(pn.Font.Name, pn.Font.Size, FontStyle.Regular, pn.Font.Unit);
             if (pn.Controls.Count > 9) pn.Controls[9].BackColor = pn.BackColor;
@@ -753,7 +753,7 @@ namespace SimPe
         private void pb_Click(object sender, EventArgs e)
         {
             PictureBox pb = (PictureBox)sender;
-            TD.Eyefinder.HeaderControl pn = (TD.Eyefinder.HeaderControl)pb.Tag;
+            SimPe.Windows.Forms.HeaderControl pn = (SimPe.Windows.Forms.HeaderControl)pb.Tag;
             SimPe.Interfaces.IWrapper wrapper = (SimPe.Interfaces.IWrapper)pn.Tag;
 
             wrapper.Priority *= -1;
@@ -765,7 +765,7 @@ namespace SimPe
             SetBackgroundColor(pn.Controls[pn.Controls.Count - 3], i, false);
         }
 
-        int FindPanelIndex(TD.Eyefinder.HeaderControl pn)
+        int FindPanelIndex(SimPe.Windows.Forms.HeaderControl pn)
         {
             for (int i = 0; i < wrappers.Count; i++)
             {
@@ -777,8 +777,8 @@ namespace SimPe
 
         void Exchange(int index, int o)
         {
-            TD.Eyefinder.HeaderControl pn1 = (TD.Eyefinder.HeaderControl)wrappers[index];
-            TD.Eyefinder.HeaderControl pn2 = (TD.Eyefinder.HeaderControl)wrappers[index + o];
+            SimPe.Windows.Forms.HeaderControl pn1 = (SimPe.Windows.Forms.HeaderControl)wrappers[index];
+            SimPe.Windows.Forms.HeaderControl pn2 = (SimPe.Windows.Forms.HeaderControl)wrappers[index + o];
 
             int d = pn1.Top;
             pn1.Top = pn2.Top;
@@ -836,7 +836,7 @@ namespace SimPe
         private void pb_ExpandClick(object sender, EventArgs e)
         {
             PictureBox pb = (PictureBox)sender;
-            TD.Eyefinder.HeaderControl pn = (TD.Eyefinder.HeaderControl)pb.Tag;
+            SimPe.Windows.Forms.HeaderControl pn = (SimPe.Windows.Forms.HeaderControl)pb.Tag;
 
             if (pn.Height == pn.DisplayRectangle.Top + 1)
             {
