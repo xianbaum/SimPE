@@ -1,0 +1,4 @@
+bin
+obj
+Plugins
+*.csproj.user
