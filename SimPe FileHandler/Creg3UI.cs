@@ -144,6 +144,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private System.Windows.Forms.TextBox tbVer;
 
 		Creg3 creg;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Creg3 Creg
 		{
 			get {return  creg;}

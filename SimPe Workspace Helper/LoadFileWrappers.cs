@@ -120,12 +120,14 @@ namespace SimPe
 			return "Plugin Error";
 		}
 
+		[System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
 		public Interfaces.Files.IPackedFileDescriptor FileDescriptor
 		{
 			get { return pfd; }
 			set { pfd = value; }
 		}
 
+		[System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
 		public Interfaces.Files.IPackageFile Package
 		{
 			get { return package; }

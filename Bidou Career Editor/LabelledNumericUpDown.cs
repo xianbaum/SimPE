@@ -35,6 +35,7 @@ namespace SimPe.Plugin
             lbLabel.Visible = !noLabel;
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public FlowDirection FlowDirection
         {
             get { return flpMain.FlowDirection; }
@@ -45,6 +46,7 @@ namespace SimPe.Plugin
         /// Hides the label
         /// </summary>
         private bool noLabel = false;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool NoLabel
         {
             get { return noLabel; }
@@ -64,38 +66,45 @@ namespace SimPe.Plugin
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public String Label
         {
             get { return lbLabel.Text; }
             set { lbLabel.Text = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public AnchorStyles LabelAnchor
         {
             get { return lbLabel.Anchor; }
             set { lbLabel.Anchor = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Value
         {
             get { return nudValue.Value; }
             set { nudValue.Value = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Size ValueSize
         {
             get { return nudValue.Size; }
             set { nudValue.Size = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ReadOnly { get { return nudValue.ReadOnly; } set { nudValue.ReadOnly = value; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Maximum
         {
             get { return nudValue.Maximum; }
             set { nudValue.Maximum = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Minimum
         {
             get { return nudValue.Minimum; }

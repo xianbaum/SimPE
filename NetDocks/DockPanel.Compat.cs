@@ -31,6 +31,7 @@ namespace Ambertation.Windows.Forms
     partial class DockPanel
     {
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image TabImage
         {
             get { return this.Image; }
@@ -38,6 +39,7 @@ namespace Ambertation.Windows.Forms
         }
 
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string TabText
         {
             get { return this.ButtonText; }
@@ -45,35 +47,41 @@ namespace Ambertation.Windows.Forms
         }
 
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AllowFloat {
             get { return true; }
             set {  }
         }
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AllowDockBottom
         {
             get { return true; }
             set { }
         }
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AllowDockLeft
         {
             get { return true; }
             set { }
         }
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AllowDockRight
         {
             get { return true; }
             set { }
         }
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AllowDockTop
         {
             get { return true; }
             set { }
         }
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AllowDockCenter
         {
             get { return true; }
@@ -81,6 +89,7 @@ namespace Ambertation.Windows.Forms
         }
 
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AllowClose
         {
             get { return this.ShowCloseButton; }
@@ -88,6 +97,7 @@ namespace Ambertation.Windows.Forms
         }
 
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AllowCollapse
         {
             get { return this.ShowCollapseButton; }
@@ -115,6 +125,7 @@ namespace Ambertation.Windows.Forms
 
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Size FloatingSize
         {
             get { return this.Size; }

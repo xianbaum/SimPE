@@ -42,6 +42,7 @@ namespace SimPe.Plugin
 		Hashtable loadedFiles;
 		PackageSettings settings;
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public PackageSettings Settings
 		{
 			get { return this.settings; }

@@ -91,6 +91,7 @@ namespace Ambertation.Windows.Forms
 
 		#region public Properties
 		Type myenum;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Type Enum 
 		{
 			get {return myenum;}
@@ -105,6 +106,7 @@ namespace Ambertation.Windows.Forms
 		}
 
 		System.Resources.ResourceManager rm;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public System.Resources.ResourceManager ResourceManager
 		{
 			get { return rm; }
@@ -118,6 +120,7 @@ namespace Ambertation.Windows.Forms
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new object SelectedValue
 		{
 			get 

@@ -127,6 +127,7 @@ namespace SimPe.Windows.Forms
 		#region Public Properties
 		string txt;
 		[Localizable(true)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string HeaderText
 		{
 			get { return txt; }
@@ -140,6 +141,7 @@ namespace SimPe.Windows.Forms
         }
 
         bool sl = false;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ShowLogo
         {
             get { return sl; }
@@ -149,24 +151,28 @@ namespace SimPe.Windows.Forms
         Color headcol, headend, headforecol;
 		Font headfont;
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color HeadBackColor
 		{
 			get { return headcol; }
 			set { if (value!=headcol) { headcol = value; Invalidate(); } }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color HeadEndColor
         {
             get { return headend; }
             set { if (value != headend) { headend = value; Invalidate(); } }
         }
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color HeadForeColor
 		{
 			get { return headforecol; }
 			set { if (value!=headforecol) { headforecol = value; this.Invalidate(); } }
 		}		
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Font HeadFont
 		{
 			get { return headfont; }
@@ -187,24 +193,28 @@ namespace SimPe.Windows.Forms
         bool mPicFit;
         ImageLayout bklayout;
 	
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color GradientColor
 		{
 			get { return gradcol; }
 			set { if (value!=gradcol) { gradcol = value; this.Invalidate(); } }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color MiddleColor
         {
             get { return midcol; }
             set { if (value != midcol) { midcol = value; this.Invalidate(); } }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public float GradCentre
         {
             get { return mCentre; }
             set { mCentre = value; this.Invalidate(); }
         }
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public LinearGradientMode Gradient
 		{
 			get { return this.mGradient; }
@@ -212,16 +222,22 @@ namespace SimPe.Windows.Forms
 		}
 
 		bool cc;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool CanCommit
 		{
 			get {return cc;}
 			set { cc = value; this.btCommit.Visible = cc; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool BackgroundImageZoomToFit { get { return mPicFit; } set { mPicFit = value; this.Invalidate(); } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public float BackgroundImageScale { get { return mPicZoom; } set { if (!mPicFit) { mPicZoom = value; this.Invalidate(); } } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Drawing.Point BackgroundImageLocation { get { return mPicloc; } set { mPicloc = value; this.Invalidate(); } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ImageLayout BackgroundImageAnchor { get { return bklayout; } set { bklayout = value; this.Invalidate(); } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public float BackgroundImageOpacity { get { return mPicOpacity; } set { mPicOpacity = value; this.Invalidate(); } }
 
         [Localizable(false)]

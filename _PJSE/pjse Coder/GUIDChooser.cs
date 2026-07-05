@@ -54,21 +54,27 @@ namespace SimPe.Plugin
 
         [Browsable(true)]
         [EditorBrowsable(0)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int DropDownHeight { get { return cbKnownObjects.DropDownHeight; } set { cbKnownObjects.DropDownHeight = value; } }
         [Browsable(true)]
         [EditorBrowsable(0)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int DropDownWidth { get { return cbKnownObjects.DropDownWidth; } set { cbKnownObjects.DropDownWidth = value; } }
         [Browsable(true)]
         [EditorBrowsable(0)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ComboBoxWidth { get { return cbKnownObjects.Width; } set { cbKnownObjects.Width = value; } }
         [Browsable(true)]
         [EditorBrowsable(0)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ComboBoxStyle DropDownStyle { get { return cbKnownObjects.DropDownStyle; } set { cbKnownObjects.DropDownStyle = value; } }
         [Browsable(true)]
         [EditorBrowsable(0)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Label { get { return lbLabel.Text; } set { lbLabel.Text = value; } }
         [Browsable(true)]
         [EditorBrowsable(0)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UInt32 Value
         {
             get
@@ -116,6 +122,7 @@ namespace SimPe.Plugin
 
         [Browsable(true)]
         [EditorBrowsable(0)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public object[] KnownObjects
         {
             //get { }

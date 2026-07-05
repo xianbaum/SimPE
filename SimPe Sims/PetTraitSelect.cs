@@ -19,6 +19,7 @@ namespace SimPe.PackedFiles.Wrapper
             Level = Levels.Normal;
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Levels Level
         {
             get

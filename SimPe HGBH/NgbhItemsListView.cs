@@ -254,6 +254,7 @@ namespace SimPe.Plugin
 		#endregion
 
 		SimPe.Data.NeighborhoodSlots st;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SimPe.Data.NeighborhoodSlots SlotType 
 		{
 			get {return st;}
@@ -275,6 +276,7 @@ namespace SimPe.Plugin
         public bool ShowGossip
         { get { return cc; } set { cc = value; this.cbnogoss.Visible = cc; } }
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public NgbhSlotList Slot
 		{
 			get 
@@ -293,6 +295,7 @@ namespace SimPe.Plugin
 
 		Collections.NgbhItems items;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Collections.NgbhItems NgbhItems 
 		{
 			get {return items;}
@@ -424,6 +427,7 @@ namespace SimPe.Plugin
 		}
 
 		ImageList sil;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ImageList SmallImageList
 		{
 			get { return sil;}

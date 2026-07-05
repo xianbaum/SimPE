@@ -101,6 +101,7 @@ namespace SimPe.PackedFiles.UserInterface
         private static String strTrue  = null;
         private static String strFalse = null;
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Bhav Wrapper
 		{
 			set
@@ -120,6 +121,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int Index
 		{
 			set

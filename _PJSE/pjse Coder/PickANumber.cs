@@ -100,12 +100,14 @@ namespace pjse
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public String Title
         {
             get { return this.Text; }
             set { this.Text = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public String Prompt
         {
             get { return this.label1.Text; }

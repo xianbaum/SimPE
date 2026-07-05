@@ -233,18 +233,22 @@ namespace SimPe.Plugin
 		#endregion
 
         bool lodesubs = true;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ShowSubHoods { get { return lodesubs; } set { lodesubs = value; } }
 
         bool ngbhBUMgr = true;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ShowBackupManager { get { return ngbhBUMgr; } set { ngbhBUMgr = value; } }
 
         bool loadNgbh = true;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool LoadNgbh { get { return loadNgbh; } set { loadNgbh = value; } }
 
         NgbhType ngbh = null;
         public string SelectedNgbh { get { return ngbh == null ? null : ngbh.FileName; } }
 
         int forcedg = PathProvider.Global.CurrentGroup;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ForcedGroup { get { return forcedg; } set { forcedg = value; } }
 
 		SimPe.Packages.GeneratableFile package;

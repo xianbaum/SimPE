@@ -139,6 +139,7 @@ namespace SimPe.Plugin
 
 		NgbhSlot slot;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public NgbhSlot Slot
 		{
 			get {return slot;}
@@ -156,6 +157,7 @@ namespace SimPe.Plugin
         private booby.TaskBox xpSkills;
 				
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Ngbh NgbhResource
 		{
 			get {return ngbh;}
@@ -168,6 +170,7 @@ namespace SimPe.Plugin
 		}
 
 		SimPe.PackedFiles.Wrapper.SimPoolControl pc;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SimPe.PackedFiles.Wrapper.SimPoolControl SimPoolControl
 		{
 			get {return pc;}

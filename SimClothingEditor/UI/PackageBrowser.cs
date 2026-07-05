@@ -51,6 +51,7 @@ namespace SimPe.Plugin.UI
 			get { return this.settings; }
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public FileDatabase FileDatabase
 		{
 			get { return this.database; }

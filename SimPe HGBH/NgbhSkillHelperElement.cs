@@ -104,6 +104,7 @@ namespace SimPe.Plugin
 		#endregion
 
 		bool badge, skill, tskill;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowBadges
 		{
 			get { return badge;}
@@ -117,6 +118,7 @@ namespace SimPe.Plugin
 				}
 			}
 		}
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowSkills
 		{
 			get { return skill;}
@@ -130,6 +132,7 @@ namespace SimPe.Plugin
 				}
 			}
 		}
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowToddlerSkills
 		{
 			get { return tskill;}
@@ -146,6 +149,7 @@ namespace SimPe.Plugin
 
 		Ngbh ngbh;			
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Ngbh NgbhResource
 		{
 			get {return ngbh;}
@@ -158,6 +162,7 @@ namespace SimPe.Plugin
 
 		NgbhSlot slot;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public NgbhSlot Slot
 		{
 			get {return slot;}

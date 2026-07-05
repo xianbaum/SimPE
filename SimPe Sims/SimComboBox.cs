@@ -112,6 +112,7 @@ namespace SimPe.PackedFiles.Wrapper
 			cb.Sorted = true;
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ushort SelectedSimInstance
 		{
 			get 
@@ -139,6 +140,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public uint SelectedSimId
 		{
 			get 
@@ -166,6 +168,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SimPe.PackedFiles.Wrapper.ExtSDesc SelectedSim
 		{
 			get 

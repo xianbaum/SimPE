@@ -61,6 +61,7 @@ namespace SimPe.Wizards
 		}		
 
 		Image img;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public virtual System.Drawing.Image Image
 		{
 			get{ return img;}
@@ -72,6 +73,7 @@ namespace SimPe.Wizards
 			get { return Controls.Count; }
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int CurrentStepNumber
 		{
 			get { return cur; }
@@ -92,6 +94,7 @@ namespace SimPe.Wizards
 
 		bool ne;
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool NextEnabled 
 		{
 			get {return ne;}
@@ -107,6 +110,7 @@ namespace SimPe.Wizards
 
 		bool pe;
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool PrevEnabled 
 		{
 			get {return pe;}
@@ -122,6 +126,7 @@ namespace SimPe.Wizards
 
 		bool fe;
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool FinishEnabled 
 		{
 			get {return fe;}

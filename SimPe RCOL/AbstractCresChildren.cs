@@ -208,7 +208,7 @@ namespace SimPe.Plugin
 
 
 #if DEBUG
-				sw.WriteLine("++++"+t.ToString()+" "+t.Name);
+				sw.WriteLine("++++"+t.ToString());
 				sw.WriteLine("    "+v.ToString());
 #endif
 

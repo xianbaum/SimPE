@@ -108,6 +108,7 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.TextBox tb;
 	
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public BnfoCustomerItem Item
 		{
 			get {return item;}
@@ -125,6 +126,7 @@ namespace SimPe.Plugin
 		BnfoCustomerItemsUI ui;
 		private booby.LabeledProgressBar pb;
 	
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public BnfoCustomerItemsUI BnfoCustomerItemsUI
 		{
 			get {return ui;}

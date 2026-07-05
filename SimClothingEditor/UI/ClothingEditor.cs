@@ -44,6 +44,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public File SimPackage
 		{
 			get { return this.simPackage; }

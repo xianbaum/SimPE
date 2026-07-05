@@ -795,6 +795,7 @@ namespace SimPe.Plugin.Anim
 
 		#region Public Properties
 		AnimationFrameBlock afb;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public AnimationFrameBlock FrameBlock
 		{
 			get { return afb; }

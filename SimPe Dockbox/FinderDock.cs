@@ -159,6 +159,7 @@ namespace SimPe.Plugin.Tool.Dockable
         bool truncated;
         bool forcestop;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ForcedStop
         {
             get { return forcestop; }

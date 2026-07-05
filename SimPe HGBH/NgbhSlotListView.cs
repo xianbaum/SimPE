@@ -88,6 +88,7 @@ namespace SimPe.Plugin
 
 		NgbhSlot slot;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public NgbhSlot Slot
 		{
 			get {return slot;}
@@ -100,6 +101,7 @@ namespace SimPe.Plugin
 
 		Collections.NgbhSlots slots;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Collections.NgbhSlots Slots
 		{
 			get {return slots;}
@@ -112,6 +114,7 @@ namespace SimPe.Plugin
 
 		Ngbh ngbh;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Ngbh NgbhResource
 		{
 			get {return ngbh;}
@@ -123,6 +126,7 @@ namespace SimPe.Plugin
 		}
 
 		Data.NeighborhoodSlots st;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Data.NeighborhoodSlots SlotType 
 		{
 			get {return st;}

@@ -40,10 +40,14 @@ namespace SimPe.Plugin
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string TitleLabel { get { return lbTitle.Text; } set { lbTitle.Text = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string TitleValue { get { return tbTitle.Text; } set { tbTitle.Text = value; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string DescLabel { get { return lbDesc.Text; } set { lbDesc.Text = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string DescValue { get { return tbDesc.Text; } set { tbDesc.Text = value; } }
         /*
         public Size DescSize

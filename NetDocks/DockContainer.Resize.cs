@@ -57,6 +57,7 @@ namespace Ambertation.Windows.Forms
         }
 
         bool canresize;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         internal bool CanResize
         {
             get { return canresize; }

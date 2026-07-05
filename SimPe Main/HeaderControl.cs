@@ -23,6 +23,7 @@ namespace SimPe.Windows.Forms
             TabStop = true;
         }
 
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public HeaderStyle HeaderStyle { get; set; } = HeaderStyle.SubHeading;
     }
 }

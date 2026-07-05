@@ -83,6 +83,7 @@ namespace SimPe.PackedFiles.Wrapper
         bool intern;
 
         bool showrel, shownorel;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ShowRelatedSims
         {
             get { return showrel; }
@@ -98,6 +99,7 @@ namespace SimPe.PackedFiles.Wrapper
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ShowNotRelatedSims
         {
             get { return shownorel; }
@@ -125,6 +127,7 @@ namespace SimPe.PackedFiles.Wrapper
 
         ExtSDesc sim;
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ExtSDesc Sim
         {
             get { return sim; }

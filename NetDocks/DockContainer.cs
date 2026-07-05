@@ -91,6 +91,7 @@ namespace Ambertation.Windows.Forms
             this.DoDockChanged();
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public BaseDockManager Manager
         {
             get { return manager; }
@@ -114,6 +115,7 @@ namespace Ambertation.Windows.Forms
         {
             nccleanint = val;
         }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool NoCleanup
         {
             get { return noclean || nccleanint; }

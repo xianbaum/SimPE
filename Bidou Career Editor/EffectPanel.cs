@@ -89,22 +89,35 @@ namespace SimPe.Plugin
             female = tbFemale.Text;
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Cooking { get { return lnudCooking.Value; } set { lnudCooking.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Mechanical { get { return lnudMechanical.Value; } set { lnudMechanical.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Charisma { get { return lnudCharisma.Value; } set { lnudCharisma.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Body { get { return lnudBody.Value; } set { lnudBody.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Creativity { get { return lnudCreativity.Value; } set { lnudCreativity.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Logic { get { return lnudLogic.Value; } set { lnudLogic.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Cleaning { get { return lnudCleaning.Value; } set { lnudCleaning.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Money { get { return lnudMoney.Value; } set { lnudMoney.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal JobLevels { get { return lnudJobLevels.Value; } set { lnudJobLevels.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Food { get { return lnudMoney.Value; } set { lnudMoney.Value = value; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Male { get { return tbMale.Text; } set { tbMale.Text = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Female { get { return tbFemale.Text; } set { tbFemale.Text = value; } }
         //public Size TextSize { get { return tbMale.Size; } set { tbFemale.Size = tbMale.Size = value; } }
 
         private bool isPetCareer = false;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsPetCareer
         {
             get { return isPetCareer; }
@@ -116,6 +129,7 @@ namespace SimPe.Plugin
             }
         }
         private bool isCastaway = false;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsCastaway
         {
             get { return isCastaway; }

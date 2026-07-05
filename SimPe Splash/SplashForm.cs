@@ -75,6 +75,7 @@ namespace SimPe.Windows.Forms
             g.Dispose();
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Message
         {
             get { return msg; }

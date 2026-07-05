@@ -108,6 +108,7 @@ namespace SimPe.Plugin
 
 		Ngbh ngbh;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Ngbh NgbhResource
 		{
 			get {return ngbh;}

@@ -116,6 +116,7 @@ namespace Ambertation.Windows.Forms
 		#endregion
 
 		#region Properties
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new Control Parent
 		{
 			get {return base.Parent;}
@@ -135,6 +136,7 @@ namespace Ambertation.Windows.Forms
 			}
 		}
 		bool lk;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool LockItems
 		{
 			get {return lk;}
@@ -147,6 +149,7 @@ namespace Ambertation.Windows.Forms
 			}
 		}
 		bool savebound;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public virtual bool SaveBounds
 		{
 			get { return savebound; }
@@ -169,6 +172,7 @@ namespace Ambertation.Windows.Forms
 			}
 		}
 		Ambertation.Windows.Forms.Graph.LinkControlLineMode lm;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Ambertation.Windows.Forms.Graph.LinkControlLineMode LineMode
 		{
 			get {return lm; }
@@ -180,6 +184,7 @@ namespace Ambertation.Windows.Forms
 		}
 
 		bool quality;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool Quality
 		{
 			get { return quality; }
@@ -191,6 +196,7 @@ namespace Ambertation.Windows.Forms
 		}
 		int minwd, minhg;
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int MinWidth
 		{
 			get { 
@@ -206,6 +212,7 @@ namespace Ambertation.Windows.Forms
 		}
 
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int MinHeight
 		{
 			get { 
@@ -232,6 +239,7 @@ namespace Ambertation.Windows.Forms
 		}
 
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public GraphPanelElement SelectedElement
 		{
 			get 

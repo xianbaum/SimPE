@@ -39,6 +39,7 @@ namespace SimPe.Plugin.UI
         //private ToolTip toolTip1;
         //private IContainer components;
 		public event EventHandler SettingsChanged;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new ClothingSettings Settings
 		{
 			get { return base.Settings as ClothingSettings; }

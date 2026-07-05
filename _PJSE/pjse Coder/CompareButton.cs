@@ -34,6 +34,7 @@ namespace pjse
     public partial class CompareButton : Button
     {
         private pjse.ExtendedWrapper wrapper = null;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public pjse.ExtendedWrapper Wrapper
         {
             get { return wrapper; }
@@ -45,6 +46,7 @@ namespace pjse
         }
 
         private string wrapperName;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string WrapperName { get { return wrapperName; } set { wrapperName = value; } }
 
         /// <summary>

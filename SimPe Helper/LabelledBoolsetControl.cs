@@ -60,6 +60,7 @@ namespace System.Windows.Forms
         [Browsable(true)]
         [EditorBrowsable(0)]
         [Description("Show or Hide the All/None buttons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ButtonsVisible
         {
             get { return btnAll.Visible && btnNone.Visible; }
@@ -69,6 +70,7 @@ namespace System.Windows.Forms
         [Browsable(true)]
         [EditorBrowsable(0)]
         [Description("The unsigned short value representing the bit set to be edited")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ushort Value
         {
             get { return (ushort)boolset; }
@@ -99,6 +101,7 @@ namespace System.Windows.Forms
         [Browsable(true)]
         [EditorBrowsable(0)]
         [Description("The collection representing the labels for the bits")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<string> Labels
         {
             get { return labels; }

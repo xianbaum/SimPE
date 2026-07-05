@@ -602,6 +602,7 @@ namespace SimPe.Plugin
         private Label label11;
 	
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public NgbhItem Item
 		{
 			get {return item;}
@@ -613,6 +614,7 @@ namespace SimPe.Plugin
 		}
 
 		Plugin.NgbhItemsListView nilv;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Plugin.NgbhItemsListView NgbhItemsListView
 		{
 			get {return nilv;}

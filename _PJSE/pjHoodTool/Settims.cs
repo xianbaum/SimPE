@@ -64,6 +64,7 @@ namespace pjHoodTool
             this.Close();
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         internal bool Settings
         {
             get

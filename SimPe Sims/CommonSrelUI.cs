@@ -338,6 +338,7 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 
         SimPe.PackedFiles.Wrapper.ExtSrel srel;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SimPe.PackedFiles.Wrapper.ExtSrel Srel
 		{
 			get {return srel;}

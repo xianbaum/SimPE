@@ -691,6 +691,7 @@ namespace SimPe.Plugin.Anim
 
 		#region Public properties
 		AnimationAxisTransform aat;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public AnimationAxisTransform AxisTransform
 		{
 			get {return aat;}
@@ -704,6 +705,7 @@ namespace SimPe.Plugin.Anim
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool CanCreate
 		{
 			get { return llAdd.Visible; }

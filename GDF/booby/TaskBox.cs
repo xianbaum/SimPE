@@ -45,6 +45,7 @@ public class TaskBox : Panel
 
 	private int imgoff;
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color LeftHeaderColor
 	{
 		get
@@ -61,6 +62,7 @@ public class TaskBox : Panel
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color RightHeaderColor
 	{
 		get
@@ -77,6 +79,7 @@ public class TaskBox : Panel
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color BorderColor
 	{
 		get
@@ -93,6 +96,7 @@ public class TaskBox : Panel
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color HeaderTextColor
 	{
 		get
@@ -109,6 +113,7 @@ public class TaskBox : Panel
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color BodyColor
 	{
 		get
@@ -125,6 +130,7 @@ public class TaskBox : Panel
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Font HeaderFont
 	{
 		get
@@ -141,6 +147,7 @@ public class TaskBox : Panel
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Size IconSize
 	{
 		get
@@ -157,6 +164,7 @@ public class TaskBox : Panel
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Point IconLocation
 	{
 		get

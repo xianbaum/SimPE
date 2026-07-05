@@ -61,6 +61,7 @@ namespace Ambertation.Windows.Forms
 
         bool dborder;
         [Description("true, if you want allow users to drag this Control at runtime, by holding the mouse down over the border")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DragBorder
         {
             get { return dborder; }

@@ -82,6 +82,7 @@ namespace SimPe
         }
 
         string msg;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Message
         {
             get {
@@ -101,6 +102,7 @@ namespace SimPe
         }
 
         int max;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaxProgress
         {
             get { lock (pb) { return max; } }
@@ -116,6 +118,7 @@ namespace SimPe
 
         int val;
         int nowp;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int Progress
         {
             get { return val; }
@@ -143,6 +146,7 @@ namespace SimPe
         }
 
         bool wait;        
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Waiting
         {
             get { return wait; }
@@ -172,6 +176,7 @@ namespace SimPe
         }
 
         bool spb;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ShowProgress
         {
             get { return spb; }
@@ -197,6 +202,7 @@ namespace SimPe
         }
 
         bool sanim;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ShowAnimation
         {
             get { return sanim; }
@@ -213,6 +219,7 @@ namespace SimPe
         }
 
         bool stxt;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ShowText
         {
             get { return stxt; }
@@ -237,6 +244,7 @@ namespace SimPe
             get { return Waiting; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Image
         {
             get

@@ -133,6 +133,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <summary>
 		/// Returns or sets the index of the currently selected instruction
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int SelectedIndex
 		{
 			get { return csel; }

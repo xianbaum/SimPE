@@ -31,6 +31,7 @@ namespace Ambertation.Windows.Forms
     partial class DockContainer
     {
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image TabImage
         {
             get { return null; }
@@ -38,6 +39,7 @@ namespace Ambertation.Windows.Forms
         }
 
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string TabText
         {
             get { return ""; }

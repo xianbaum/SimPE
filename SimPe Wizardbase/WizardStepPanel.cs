@@ -95,6 +95,7 @@ namespace SimPe.Wizards
 		}
 
 		bool first;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool First
 		{
 			get
@@ -108,6 +109,7 @@ namespace SimPe.Wizards
 		}
 
 		bool last;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool Last
 		{
 			get

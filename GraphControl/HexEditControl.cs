@@ -37,6 +37,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Returns the embedded HexViewControl
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public HexViewControl Viewer 
 		{
 			get { return hvc; }
@@ -66,6 +67,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Font for the Captions
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Font LabelFont
 		{
 			get { return efont; }
@@ -83,6 +85,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Font for the TextBoxes
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Font TextBoxFont
 		{
 			get { return tfont; }
@@ -101,6 +104,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Display the Editor for Vertical Alignment
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool Vertical 
 		{
 			get {return vert;}
@@ -118,6 +122,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Returns / sets the current ViewState
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public HexViewControl.ViewState View
 		{
 			get {return vs; }

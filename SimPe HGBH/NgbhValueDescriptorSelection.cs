@@ -86,6 +86,7 @@ namespace SimPe.Plugin
 		#endregion
 
 		bool badge, skill, tskill;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowBadges
 		{
 			get { return badge;}
@@ -97,6 +98,7 @@ namespace SimPe.Plugin
 				}
 			}
 		}
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowSkills
 		{
 			get { return skill;}
@@ -109,6 +111,7 @@ namespace SimPe.Plugin
 				}
 			}
 		}
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowToddlerSkills
 		{
 			get { return tskill;}

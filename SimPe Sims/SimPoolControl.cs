@@ -54,6 +54,7 @@ namespace SimPe.PackedFiles.Wrapper
         internal System.Windows.Forms.ComboBox cbhousehold;
         private System.ComponentModel.IContainer components;
 
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public SimPe.PackedFiles.Wrapper.SDesc SelectedElement
         {
             get
@@ -64,6 +65,7 @@ namespace SimPe.PackedFiles.Wrapper
             set { FindItem(value); }
         }
 
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public SimPe.PackedFiles.Wrapper.ExtSDesc SelectedSim
         {
             get
@@ -75,6 +77,7 @@ namespace SimPe.PackedFiles.Wrapper
         }
 
         SimPe.Interfaces.Files.IPackageFile pkg;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public SimPe.Interfaces.Files.IPackageFile Package
         {
             get { return pkg; }
@@ -116,6 +119,7 @@ namespace SimPe.PackedFiles.Wrapper
         }
 
         bool details;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public bool SimDetails
         {
             get { return details; }
@@ -129,6 +133,7 @@ namespace SimPe.PackedFiles.Wrapper
             }
         }
 
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public System.Drawing.Color ListBackground
         {
             get { return gp.BackColor; }
@@ -420,6 +425,7 @@ namespace SimPe.PackedFiles.Wrapper
 
         ListViewItem lastsel;
         bool rightclicksel;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public bool RightClickSelect
         {
             get { return rightclicksel; }

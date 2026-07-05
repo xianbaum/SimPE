@@ -57,6 +57,7 @@ namespace pjse
         private TtabSingleMotiveUI[] mUI = null;
 
         private TtabItemAnimalMotiveItem item = null;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TtabItemAnimalMotiveItem MotiveSet
         {
             get
@@ -82,6 +83,7 @@ namespace pjse
         }
 
         private int nrItems = 0;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int Count
         {
             get { return nrItems; }

@@ -69,6 +69,7 @@ namespace Ambertation.Windows.Forms
         }
 
         int undockthreshold;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int UndockByCaptionThreshold
         {
             get { return undockthreshold; }
@@ -112,6 +113,7 @@ namespace Ambertation.Windows.Forms
             cbuttons.Add(close);
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Text
         {
             get { return CaptionText; }
@@ -120,6 +122,7 @@ namespace Ambertation.Windows.Forms
 
         string text, btext;
         [System.ComponentModel.Localizable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public  string CaptionText
         {
             get { return text; }
@@ -133,6 +136,7 @@ namespace Ambertation.Windows.Forms
         }
 
         [System.ComponentModel.Localizable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual string ButtonText
         {
             get { return btext; }
@@ -147,6 +151,7 @@ namespace Ambertation.Windows.Forms
         }
 
         Image img;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Image
         {
             get {return img; }
@@ -172,6 +177,7 @@ namespace Ambertation.Windows.Forms
         }
 
         BaseDockManager manager;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public BaseDockManager Manager
         {
             get { return manager; }
@@ -179,6 +185,7 @@ namespace Ambertation.Windows.Forms
         }
 
         bool canundock;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanUndock
         {
             get { return canundock; }
@@ -186,6 +193,7 @@ namespace Ambertation.Windows.Forms
         }
 
         
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanResize
         {
             get {
@@ -206,6 +214,7 @@ namespace Ambertation.Windows.Forms
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DockContainer DockContainer
         {
             get { return Parent as DockContainer; }
@@ -623,6 +632,7 @@ namespace Ambertation.Windows.Forms
             if (Closed != null && !intern) Closed(this, new EventArgs());
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Control Parent
         {
             get { return base.Parent; }
@@ -803,6 +813,7 @@ namespace Ambertation.Windows.Forms
         #endregion
 
         bool seperateindockbar;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         internal bool SeperateInDockBar
         {
             get { return seperateindockbar; }
@@ -861,6 +872,7 @@ namespace Ambertation.Windows.Forms
         #endregion
 
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool ShowCloseButton
         {
             get { return close.Visible; }
@@ -869,6 +881,7 @@ namespace Ambertation.Windows.Forms
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool ShowCollapseButton
         {
             get { return collapse.Visible; }

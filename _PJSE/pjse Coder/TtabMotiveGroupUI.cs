@@ -81,6 +81,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         #region Extra attributes
         private TtabItemMotiveGroup item = null;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public String MGName
         {
             get { return this.gbMotiveGroup.Text; }
@@ -93,6 +94,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         #region TtabMotiveGroupUI
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TtabItemMotiveGroup MotiveGroup
 		{
             get { return item; }

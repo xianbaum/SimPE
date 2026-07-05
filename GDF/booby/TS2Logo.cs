@@ -44,6 +44,7 @@ public class TS2Logo : UserControl
 
 	[Localizable(false)]
 	[Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Image BackImage
 	{
 		get
@@ -58,6 +59,7 @@ public class TS2Logo : UserControl
 
 	[Localizable(false)]
 	[Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Image ForeImage
 	{
 		get
@@ -72,6 +74,7 @@ public class TS2Logo : UserControl
 
 	[Browsable(false)]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int ImageWidth
 	{
 		get
@@ -86,6 +89,7 @@ public class TS2Logo : UserControl
 
 	[Browsable(false)]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int ImageLocationX
 	{
 		get
@@ -100,6 +104,7 @@ public class TS2Logo : UserControl
 
 	[Localizable(false)]
 	[Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int ImageLocationY
 	{
 		get
@@ -114,6 +119,7 @@ public class TS2Logo : UserControl
 
 	[Localizable(false)]
 	[Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int OverHead
 	{
 		get
@@ -128,6 +134,7 @@ public class TS2Logo : UserControl
 
 	[Browsable(false)]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int Speed
 	{
 		get
@@ -142,6 +149,7 @@ public class TS2Logo : UserControl
 
 	[Browsable(false)]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public bool Run
 	{
 		get

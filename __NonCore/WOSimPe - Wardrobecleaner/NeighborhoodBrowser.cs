@@ -18,6 +18,7 @@ namespace SimPe.Plugin.UI
 
 		public event EventHandler PackageChanged;
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public IPackageFile NeighborhoodPackage
 		{
 			get { return this.package; }

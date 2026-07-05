@@ -266,6 +266,7 @@ namespace SimPe.Plugin.Anim
 
 		#region public Properties
 		AnimationMeshBlock[] ambs;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public AnimationMeshBlock[] MeshBlocks
 		{
 			get { return ambs; }
@@ -278,6 +279,7 @@ namespace SimPe.Plugin.Anim
 		}
 
 		AnimationMeshBlock amb;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public AnimationMeshBlock MeshBlock
 		{
 			get { return amb; }

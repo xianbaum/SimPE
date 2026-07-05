@@ -53,6 +53,7 @@ namespace SimPe.Plugin.Tool.Dockable
         #region Public Properties
         protected SimPe.PackedFiles.Wrapper.ExtObjd objd;
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SimPe.PackedFiles.Wrapper.ExtObjd SelectedObject
         {
             get { return objd; }
@@ -67,6 +68,7 @@ namespace SimPe.Plugin.Tool.Dockable
         }
 
         bool loadimg;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool LoadCustomImage
         {
             get { return loadimg; }

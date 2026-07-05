@@ -19,24 +19,28 @@ namespace SimPe.Plugin.UI
 		OutfitType outfitFilter = OutfitType.None;
 
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SkinCategories CategoryFilter
 		{
 			get { return categoryFilter; }
 			set { categoryFilter = value; }
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public OutfitType OutfitFilter
 		{
 			get { return outfitFilter; }
 			set { outfitFilter = value; }
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Ages AgeFilter
 		{
 			get { return ageFilter; }
 			set { ageFilter = value; }
 		}
 		
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SimGender GenderFilter
 		{
 			get { return genderFilter; }

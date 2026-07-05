@@ -31,6 +31,7 @@ namespace Ambertation.Windows.Forms
     public abstract class BaseDockManager : DockContainer
     {
         BaseRenderer rnd;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public BaseRenderer Renderer
         {
             get { return rnd; }

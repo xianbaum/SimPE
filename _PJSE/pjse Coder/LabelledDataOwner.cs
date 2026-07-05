@@ -80,6 +80,7 @@ namespace pjse
         [Localizable(true)]
         [Browsable(true)]
         [EditorBrowsable(0)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Label { get { return lbLabel.Text; } set { lbLabel.Text = value; } }
 
         [Category("Behavior")]
@@ -95,6 +96,7 @@ namespace pjse
         [Category("Layout")]
         //[DefaultValue(true)]
         [Description("Size of the label in pixels.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Size LabelSize { get { return lbLabel.Size; } set { lbLabel.Size = value; } }
 
 
@@ -160,6 +162,7 @@ namespace pjse
         /// Specifies to which Instruction this data owner applies.  Can be null.
         /// </summary>
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public BhavWiz Instruction { get { return doc.Instruction; } set { doc.Instruction = value; } }
 
 

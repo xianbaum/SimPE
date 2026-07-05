@@ -65,6 +65,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Returns / sets the current ViewState
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ViewState View
 		{
 			get {return vs; }
@@ -83,6 +84,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// true, if you want to Highlight Zero Values
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool HighlightZeros 
 		{
 			get {return hs; }
@@ -114,6 +116,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// The Width of the Offset Listing Box
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int OffsetBoxWidth 
 		{
 			get { return offsetboxwidth; }
@@ -129,6 +132,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// The Width of the Character Listing Box
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int CharBoxWidth 
 		{
 			get { return charboxwidth; }
@@ -145,6 +149,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Returns the BorderColor
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color FocusedForeColor
 		{
 			get { return fcfcol; }
@@ -163,6 +168,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Returns the BorderColor
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color HighlightColor
 		{
 			get { return highcol; }
@@ -182,6 +188,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Returns the BorderColor
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color HighlightForeColor
 		{
 			get { return highfcol; }
@@ -201,6 +208,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Save and set the Background Color
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color HeadColor
 		{
 			get {return hcol;}
@@ -219,6 +227,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Save and set the Background Color
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color GridColor
 		{
 			get {return gcol;}
@@ -238,6 +247,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Save and set the Background Color
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color HeadForeColor
 		{
 			get {return hfcol;}
@@ -256,6 +266,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Save and set the Background Color
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color SelectionColor
 		{
 			get {return hlcol;}
@@ -275,6 +286,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Save and set the Background Color
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color ZeroCellColor
 		{
 			get {return fccol;}
@@ -294,6 +306,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Save and set the Background Color
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color SelectionForeColor
 		{
 			get {return hlfcol;}
@@ -312,6 +325,7 @@ namespace Ambertation.Windows.Forms
         /// <summary>
         /// Save and set the Background Colour
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color BackGroundColour
         {
             get { return bkgrcol; }
@@ -349,6 +363,7 @@ namespace Ambertation.Windows.Forms
 		/// <summary>
 		/// Number of 8-Column Blocks to display
 		/// </summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public byte Blocks 
 		{
 			get {return cols;}
@@ -362,6 +377,7 @@ namespace Ambertation.Windows.Forms
 		}
 
 		bool grid;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowGrid
 		{
 			get {return grid;}
@@ -407,6 +423,7 @@ namespace Ambertation.Windows.Forms
 		/// The Content that should be displayed
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public byte[] Data 
 		{
 			get { return data; }
@@ -434,6 +451,7 @@ namespace Ambertation.Windows.Forms
 		/// Current Offset
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int Offset 
 		{
 			get 
@@ -533,6 +551,7 @@ namespace Ambertation.Windows.Forms
 		/// Sets / Returns the current Row
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int CurrentRow
 		{
 			get { return crow; }
@@ -1520,6 +1539,7 @@ namespace Ambertation.Windows.Forms
 		/// </summary>
 		/// <returns></returns>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public byte[] Selection
 		{
 			get 
@@ -1542,6 +1562,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected Byte
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public byte SelectedByte
 		{
 			get 
@@ -1604,6 +1625,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected Character
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public char SelectedChar
 		{
 			get 
@@ -1627,6 +1649,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected unsigned Short
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ushort SelectedUShort
 		{
 			get 
@@ -1646,6 +1669,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected  Short
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public short SelectedShort
 		{
 			get 
@@ -1665,6 +1689,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected unsigned Integer
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public uint SelectedUInt
 		{
 			get 
@@ -1684,6 +1709,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected Integer
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int SelectedInt
 		{
 			get 
@@ -1703,6 +1729,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected unsigned Long Integer
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ulong SelectedULong
 		{
 			get 
@@ -1722,6 +1749,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected Long Integer
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public long SelectedLong
 		{
 			get 
@@ -1741,6 +1769,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected unsigned Integer
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public float SelectedFloat
 		{
 			get 
@@ -1760,6 +1789,7 @@ namespace Ambertation.Windows.Forms
 		/// Returns/Sets the selected unsigned Integer
 		/// </summary>
 		[Browsable( false )]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public double SelectedDouble
 		{
 			get 

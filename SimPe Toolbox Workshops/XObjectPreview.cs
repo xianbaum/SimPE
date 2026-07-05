@@ -30,6 +30,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		SimPe.PackedFiles.Wrapper.Cpf cpf;
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SimPe.PackedFiles.Wrapper.Cpf SelectedXObject 
 		{
 			get { return cpf; }

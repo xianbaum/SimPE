@@ -242,6 +242,7 @@ namespace Ambertation.Windows.Forms
 
 
         Size defsz;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Size DefaultSize
         {
             get { return defsz; }

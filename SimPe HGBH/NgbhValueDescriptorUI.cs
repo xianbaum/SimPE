@@ -150,6 +150,7 @@ namespace SimPe.Plugin
 
 		NgbhSlot slot;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public NgbhSlot Slot
 		{
 			get {return slot;}
@@ -172,6 +173,7 @@ namespace SimPe.Plugin
 		
 				
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public NgbhValueDescriptor NgbhValueDescriptor
 		{
 			get {return des;}
@@ -183,6 +185,7 @@ namespace SimPe.Plugin
 		}
 
 		NgbhValueDescriptorSelection vds;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public NgbhValueDescriptorSelection NgbhValueDescriptorSelection
 		{
 			get {return vds;}

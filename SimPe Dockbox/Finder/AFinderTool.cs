@@ -54,6 +54,7 @@ namespace SimPe.Interfaces
         /// The Title of this Control
         /// </summary>
         [System.ComponentModel.Localizable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Title{
             get { return grp.HeaderText; }
             set { grp.HeaderText = value; }

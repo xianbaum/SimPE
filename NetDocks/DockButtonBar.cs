@@ -192,6 +192,7 @@ namespace Ambertation.Windows.Forms
 
         #region IButtonContainer Member
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DockPanel Highlight
         {
             get { return null; }

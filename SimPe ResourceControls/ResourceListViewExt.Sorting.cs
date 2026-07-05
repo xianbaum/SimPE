@@ -16,6 +16,7 @@ namespace SimPe.Windows.Forms
         int sortticket;
         ResoureNameSorter sortingthread;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ResourceViewManager.SortColumn SortedColumn
         {
             get { return sc; }

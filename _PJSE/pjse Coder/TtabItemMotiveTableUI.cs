@@ -125,6 +125,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private Button[] aButtons;
         private int maxWidth = 0;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TtabItemMotiveTable MotiveTable
         {
             get { return item; }

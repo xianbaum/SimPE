@@ -42,6 +42,7 @@ public class LabeledProgressBar : UserControl
 	[Category("Appearance")]
 	[Description("The overall shape of the progress bar")]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public ProgresBarStyle Style
 	{
 		get
@@ -58,6 +59,7 @@ public class LabeledProgressBar : UserControl
 	[Browsable(true)]
 	[Category("Appearance")]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color SelectedColor
 	{
 		get
@@ -74,6 +76,7 @@ public class LabeledProgressBar : UserControl
 	[Browsable(true)]
 	[Description("The unfilled colour on the progress bar")]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color UnselectedColor
 	{
 		get
@@ -88,6 +91,7 @@ public class LabeledProgressBar : UserControl
 
 	[Browsable(false)]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color GradientEndColour
 	{
 		get
@@ -102,6 +106,7 @@ public class LabeledProgressBar : UserControl
 
 	[Browsable(false)]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color GradientStartColour
 	{
 		get
@@ -116,6 +121,7 @@ public class LabeledProgressBar : UserControl
 
 	[Browsable(false)]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color TextBoxBackColour
 	{
 		get
@@ -130,6 +136,7 @@ public class LabeledProgressBar : UserControl
 
 	[Localizable(false)]
 	[Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color ProgressBackColour
 	{
 		get
@@ -149,6 +156,7 @@ public class LabeledProgressBar : UserControl
 	[Category("Appearance")]
 	[Browsable(true)]
 	[Description("The number of blocks in the progress bar")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int TokenCount
 	{
 		get
@@ -165,6 +173,7 @@ public class LabeledProgressBar : UserControl
 	[Browsable(true)]
 	[Description("The width of the number display")]
 	[Category("Appearance")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int TextboxWidth
 	{
 		get
@@ -181,6 +190,7 @@ public class LabeledProgressBar : UserControl
 	[Localizable(true)]
 	[Category("Appearance")]
 	[Description("The Label Text for this control")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public string LabelText
 	{
 		get
@@ -197,6 +207,7 @@ public class LabeledProgressBar : UserControl
 	[Browsable(true)]
 	[Localizable(false)]
 	[Category("Appearance")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Font LabelFont
 	{
 		get
@@ -213,6 +224,7 @@ public class LabeledProgressBar : UserControl
 	[Description("The Label Width, the progress bar will change size to suit")]
 	[Category("Appearance")]
 	[Browsable(true)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int LabelWidth
 	{
 		get
@@ -229,6 +241,7 @@ public class LabeledProgressBar : UserControl
 	[Browsable(true)]
 	[Description("The Label Alignment (bottom or right)")]
 	[Category("Appearance")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public DockStyle LabelAlignment
 	{
 		get
@@ -247,6 +260,7 @@ public class LabeledProgressBar : UserControl
 	[Category("Data")]
 	[Description("Maiximum Value of the progress bar")]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int Maximum
 	{
 		get
@@ -264,6 +278,7 @@ public class LabeledProgressBar : UserControl
 	[Browsable(true)]
 	[Description("Current Value")]
 	[Category("Data")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int Value
 	{
 		get
@@ -281,6 +296,7 @@ public class LabeledProgressBar : UserControl
 	[Browsable(true)]
 	[Category("Data")]
 	[Description("Sets the ratio between the Text and the Bar")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public double NumberScale
 	{
 		get
@@ -302,6 +318,7 @@ public class LabeledProgressBar : UserControl
 	[Localizable(false)]
 	[Description("The Text display format (N + number of decimal places)")]
 	[Browsable(true)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public string NumberFormat
 	{
 		get
@@ -345,6 +362,7 @@ public class LabeledProgressBar : UserControl
 	[Category("Data")]
 	[Description("Offsets Value from the bar value")]
 	[Localizable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int NumberOffset
 	{
 		get
@@ -362,6 +380,7 @@ public class LabeledProgressBar : UserControl
 	[Category("Data")]
 	[Description("Offsets the text value from the bar value")]
 	[Browsable(true)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int DisplayOffset
 	{
 		get

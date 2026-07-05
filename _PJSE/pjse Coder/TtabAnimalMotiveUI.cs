@@ -68,6 +68,7 @@ namespace SimPe.PackedFiles.UserInterface
 		#region TtabSingleMotiveUI
         private TtabItemAnimalMotiveItem item = null;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TtabItemAnimalMotiveItem Motive
         {
             get { return item; }

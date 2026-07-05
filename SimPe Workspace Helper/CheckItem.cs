@@ -147,6 +147,7 @@ namespace SimPe
 		#endregion
 
 		bool cf;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool CanFix
 		{
 			get {return cf;}
@@ -162,6 +163,7 @@ namespace SimPe
 
 		string txt;
 		[System.ComponentModel.Localizable(true)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string Caption
 		{
 			get {return  txt;}
@@ -173,6 +175,7 @@ namespace SimPe
 		}
 
 		CheckItemState cs;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public CheckItemState CheckState
 		{
 			get {return cs;}
@@ -188,6 +191,7 @@ namespace SimPe
 		}
 
 		string det;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string Details
 		{
 			get {return det;}

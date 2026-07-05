@@ -31,6 +31,7 @@ public class GraphPanel : UserControl
 
 	[Localizable(false)]
 	[Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public float LineWidth
 	{
 		get
@@ -102,6 +103,7 @@ public class GraphPanel : UserControl
 	[Description("the data array to display")]
 	[Localizable(false)]
 	[Category("Appearance")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int[] Datas
 	{
 		get

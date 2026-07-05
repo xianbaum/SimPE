@@ -67,6 +67,7 @@ namespace SimPe.Plugin
         }
 
         private bool labels = true;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Labels
         {
             get
@@ -86,6 +87,7 @@ namespace SimPe.Plugin
         }
 
         private bool hsk = true;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool HaveSkills
         {
             get
@@ -103,15 +105,24 @@ namespace SimPe.Plugin
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Label { get { return lbChoice.Text; } set { lbChoice.Text = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Value { get { return tbChoice.Text; } set { tbChoice.Text = value; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Cooking { get { return lnudCooking.Value; } set { lnudCooking.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Mechanical { get { return lnudMechanical.Value; } set { lnudMechanical.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Charisma { get { return lnudCharisma.Value; } set { lnudCharisma.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Body { get { return lnudBody.Value; } set { lnudBody.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Creativity { get { return lnudCreativity.Value; } set { lnudCreativity.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Logic { get { return lnudLogic.Value; } set { lnudLogic.Value = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public decimal Cleaning { get { return lnudCleaning.Value; } set { lnudCleaning.Value = value; } }
 
     }

@@ -95,6 +95,7 @@ public class ExtProgressBar : UserControl
 
 	private int tc;
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public bool UseTokenBuffer
 	{
 		get
@@ -107,6 +108,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public ProgresBarStyle Style
 	{
 		get
@@ -132,6 +134,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int Minimum
 	{
 		get
@@ -149,6 +152,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int Maximum
 	{
 		get
@@ -166,6 +170,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int Value
 	{
 		get
@@ -183,6 +188,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public bool Quality
 	{
 		get
@@ -199,6 +205,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color UnselectedColor
 	{
 		get
@@ -216,6 +223,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color SelectedColor
 	{
 		get
@@ -233,6 +241,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color BorderColor
 	{
 		get
@@ -249,6 +258,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color ProgressBackColor
 	{
 		get
@@ -266,6 +276,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color GradientStartColor
 	{
 		get
@@ -283,6 +294,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Color GradientEndColor
 	{
 		get
@@ -300,6 +312,7 @@ public class ExtProgressBar : UserControl
 		}
 	}
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public LinearGradientMode Gradient
 	{
 		get
@@ -330,6 +343,7 @@ public class ExtProgressBar : UserControl
 	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public int TokenWidth => tw;
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public virtual int TokenCount
 	{
 		get

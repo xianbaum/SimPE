@@ -75,6 +75,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alHex16;
 		private bool internalchg;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TtabItemSingleMotiveItem Motive
         {
             get { return item; }

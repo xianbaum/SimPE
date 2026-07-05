@@ -267,6 +267,7 @@ namespace SimPe.Plugin
 		#region Properties		
         Data.NeighborhoodSlots st;
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Data.NeighborhoodSlots SlotType 
 		{
 			get {return st;}
@@ -315,6 +316,7 @@ namespace SimPe.Plugin
         NgbhSlot slot;
 
         [System.ComponentModel.Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public NgbhSlot Slut
         {
             get { return slut; }
@@ -322,6 +324,7 @@ namespace SimPe.Plugin
         }
 
         [System.ComponentModel.Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public NgbhSlot Slit
         {
             get { return slit; }
@@ -329,6 +332,7 @@ namespace SimPe.Plugin
         }
 
         [System.ComponentModel.Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public NgbhSlot Slot
         {
             get { return slot; }
@@ -337,6 +341,7 @@ namespace SimPe.Plugin
 
 		Ngbh ngbh;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Ngbh NgbhResource
 		{
 			get {return ngbh;}
@@ -349,6 +354,7 @@ namespace SimPe.Plugin
 		}
 
 		SimPe.PackedFiles.Wrapper.SimPoolControl pc;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SimPe.PackedFiles.Wrapper.SimPoolControl SimPoolControl
 		{
 			get {return pc;}

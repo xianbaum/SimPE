@@ -159,6 +159,7 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		bool si, st, sm, sjd, sa, sb, sk;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowTokens
 		{
 			get {return st;}
@@ -172,6 +173,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowAspiration
 		{
 			get {return sa;}
@@ -185,6 +187,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowBadge
 		{
 			get {return sb;}
@@ -198,6 +201,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowSkill
 		{
 			get {return sk;}
@@ -211,6 +215,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowMemories
 		{
 			get {return sm;}
@@ -224,6 +229,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowInventory
 		{
 			get {return si;}
@@ -237,6 +243,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowJobData
 		{
 			get {return sjd;}
@@ -250,6 +257,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 		
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public uint SelectedGuid
 		{
 			get 
@@ -279,6 +287,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SimPe.Cache.MemoryCacheItem SelectedItem
 		{
 			get 

@@ -63,6 +63,7 @@ namespace Ambertation.Windows.Forms
         }
 
         DockContainer parent;
+       [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
        internal DockContainer ParentContainer
         {
             get { return parent; }
@@ -70,6 +71,7 @@ namespace Ambertation.Windows.Forms
         }
 
         bool center;
+       [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
        internal bool CenterIndicator
         {
             get { return center; }
@@ -77,6 +79,7 @@ namespace Ambertation.Windows.Forms
         }
 
         bool left;
+       [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
        internal bool LeftIndicator
         {
             get { return left; }
@@ -84,6 +87,7 @@ namespace Ambertation.Windows.Forms
         }
 
         bool right;
+       [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
        internal bool RightIndicator
         {
             get { return right; }
@@ -91,6 +95,7 @@ namespace Ambertation.Windows.Forms
         }
 
         bool top;
+       [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
        internal bool TopIndicator
         {
             get { return top; }
@@ -98,6 +103,7 @@ namespace Ambertation.Windows.Forms
         }
 
         bool bottom;
+       [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
        internal bool BottomIndicator
         {
             get { return bottom; }

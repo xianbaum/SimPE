@@ -80,6 +80,7 @@ namespace SimPe.Plugin
 
 		Collections.BnfoCustomerItems items;
 		[System.ComponentModel.Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Collections.BnfoCustomerItems Items
 		{
 			get {return items;}

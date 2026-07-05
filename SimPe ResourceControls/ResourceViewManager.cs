@@ -25,6 +25,7 @@ namespace SimPe.Windows.Forms
         }
 
         ResourceListViewExt lv;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ResourceListViewExt ListView
         {
             get { return lv; }
@@ -39,6 +40,7 @@ namespace SimPe.Windows.Forms
         }
 
         ResourceTreeViewExt tv;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ResourceTreeViewExt TreeView
         {
             get { return tv; }
@@ -67,6 +69,7 @@ namespace SimPe.Windows.Forms
         }
 
         [System.ComponentModel.Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SimPe.Interfaces.Files.IPackageFile Package
         {
             get { return pkg; }

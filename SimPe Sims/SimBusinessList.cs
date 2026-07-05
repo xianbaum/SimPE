@@ -84,6 +84,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		bool loaded;
 		LinkedSDesc sdsc;
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SimPe.Interfaces.Wrapper.ISDesc SimDescription
 		{
 			get { return sdsc;}

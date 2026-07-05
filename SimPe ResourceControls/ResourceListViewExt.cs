@@ -81,6 +81,7 @@ namespace SimPe.Windows.Forms
             lv.EndUpdate();
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SimPe.Windows.Forms.IResourceViewFilter Filter
         {
             get { return curfilter; }
@@ -342,6 +343,7 @@ namespace SimPe.Windows.Forms
             PrintStats("SearchForVirtualItem");
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new ContextMenuStrip ContextMenuStrip
         {
             get { return lv.ContextMenuStrip; }
