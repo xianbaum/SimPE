@@ -42,6 +42,9 @@
   <Folder Name="/_PJSE/pjObjKeyTool/">
     <Project Path="_PJSE/pjObjKeyTool/SimPe pjObjKeyTool.csproj" />
   </Folder>
+  <Folder Name="/_PJSE/pjQuickCloneTool/">
+    <Project Path="_PJSE/pjQuickCloneTool/SimPe pjQuickCloneTool.csproj" />
+  </Folder>
   <Folder Name="/_PJSE/pjse Coder/">
     <Project Path="_PJSE/pjse Coder/SimPe pjse coder.csproj" />
   </Folder>
