@@ -13,6 +13,7 @@ using SimPe.Plugin.Helper;
 using SimPe.Plugin.Wrapper;
 using SimPe.Data;
 using SimPe.Plugin;
+using SimGender = SimPe.Plugin.Wrapper.SimGender;
 using SimPe.Plugin.UI;
 using SimPe.Interfaces.Scenegraph;
 

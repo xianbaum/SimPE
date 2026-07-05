@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using SimPe.Plugin.Helper;
 using SimPe.Plugin.Wrapper;
 using SimPe.Data;
+using SimGender = SimPe.Plugin.Wrapper.SimGender;
 
 namespace SimPe.Plugin.UI
 {

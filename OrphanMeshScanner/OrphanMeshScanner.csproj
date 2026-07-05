@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>theo.meshscanner.plugin</AssemblyName>
+    <RootNamespace>SimPe.Plugin</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../SimPe Cache/SimPe Cache.csproj" />
+    <ProjectReference Include="../SimPe Commandline/SimPe Commandline.csproj" />
+    <ProjectReference Include="../SimPe FileHandler/SimPe FileHandlers.csproj" />
+    <ProjectReference Include="../SimPe Helper/SimPe Helper.csproj" />
+    <ProjectReference Include="../SimPe Interfaces/SimPe Interfaces.csproj" />
+    <ProjectReference Include="../SimPe Packages/SimPe Packages.csproj" />
+    <ProjectReference Include="../SimPe RCOL/SimPe RCOL.csproj" />
+    <ProjectReference Include="../SimPe Scenegraph/SimPe Scenegraph.csproj" />
+    <ProjectReference Include="../SimPE Toolbox Scanner/SimPE Toolbox Scanner.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractCpfInfo.cs" />
+    <Compile Include="GenericCpfInfo.cs" />
+    <Compile Include="MaterialOverrideInfo.cs" />
+    <Compile Include="OrphanMeshScanner.cs" />
+    <Compile Include="OverlayInfo.cs" />
+    <Compile Include="Utility.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>theos.sim-clothing-editor.plugin</AssemblyName>
+    <RootNamespace>SimPe.Plugin</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../SimPe FileHandler/SimPe FileHandlers.csproj" />
+    <ProjectReference Include="../SimPe Helper/SimPe Helper.csproj" />
+    <ProjectReference Include="../SimPe Interfaces/SimPe Interfaces.csproj" />
+    <ProjectReference Include="../SimPe Packages/SimPe Packages.csproj" />
+    <ProjectReference Include="../SimPe RCOL/SimPe RCOL.csproj" />
+    <ProjectReference Include="../SimPe Scenegraph/SimPe Scenegraph.csproj" />
+    <ProjectReference Include="../SimPe Sims/SimPe Sims.csproj" />
+    <ProjectReference Include="../SimPe Workspace Helper/SimPe Workspace Helper.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helper/EnumLocalizer.cs" />
+    <Compile Include="Helper/FileDatabase.cs" />
+    <Compile Include="Helper/Localizable.cs" />
+    <Compile Include="Helper/Utility.cs" />
+    <Compile Include="PackageBrowserSettings.cs" />
+    <Compile Include="Properties/AssemblyInfo.cs" />
+    <Compile Include="SimClothingTool.cs" />
+    <Compile Include="UI/ClothingBrowser.cs" />
+    <Compile Include="UI/ClothingBrowser.Designer.cs">
+      <DependentUpon>ClothingBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI/ClothingEditor.cs" />
+    <Compile Include="UI/ClothingEditor.Designer.cs">
+      <DependentUpon>ClothingEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI/HairBrowser.cs" />
+    <Compile Include="UI/HairBrowser.Designer.cs">
+      <DependentUpon>HairBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI/MainForm.cs" />
+    <Compile Include="UI/MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI/PackageBrowser.cs" />
+    <Compile Include="UI/PackageBrowser.Designer.cs">
+      <DependentUpon>PackageBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WrapperFactory.cs" />
+    <Compile Include="Wrapper/AbstractCpfInfo.cs" />
+    <Compile Include="Wrapper/AbstractRcolInfo.cs" />
+    <Compile Include="Wrapper/AbstractRefInfo.cs" />
+    <Compile Include="Wrapper/AgeData.cs" />
+    <Compile Include="Wrapper/GenericCpfInfo.cs" />
+    <Compile Include="Wrapper/MaterialDefinitionInfo.cs" />
+    <Compile Include="Wrapper/SkinReferenceTable.cs" />
+    <Compile Include="Wrapper/TextureOverlayInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Helper/EnumLocalizer.resx">
+      <DependentUpon>EnumLocalizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PackageBrowserSettings.resx">
+      <DependentUpon>PackageBrowserSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI/ClothingBrowser.resx">
+      <DependentUpon>ClothingBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI/ClothingEditor.resx">
+      <DependentUpon>ClothingEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI/HairBrowser.resx">
+      <DependentUpon>HairBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI/MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI/PackageBrowser.resx">
+      <DependentUpon>PackageBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

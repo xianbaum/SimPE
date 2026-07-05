@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>theos.simsurgery.plugin</AssemblyName>
+    <RootNamespace>SimPe.Plugin</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../SimPe Cache/SimPe Cache.csproj" />
+    <ProjectReference Include="../SimPe FileHandler/SimPe FileHandlers.csproj" />
+    <ProjectReference Include="../SimPe Helper/SimPe Helper.csproj" />
+    <ProjectReference Include="../SimPe Interfaces/SimPe Interfaces.csproj" />
+    <ProjectReference Include="../SimPe Packages/SimPe Packages.csproj" />
+    <ProjectReference Include="../SimPe RCOL/SimPe RCOL.csproj" />
+    <ProjectReference Include="../SimPe Scenegraph/SimPe Scenegraph.csproj" />
+    <ProjectReference Include="../SimPe Sims/SimPe Sims.csproj" />
+    <ProjectReference Include="../SimPe Workspace Helper/SimPe Workspace Helper.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PlasticSurgery.cs" />
+    <Compile Include="Surgery.cs" />
+    <Compile Include="SurgeryTool.cs" />
+    <Compile Include="WrapperFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Surgery.resx">
+      <DependentUpon>Surgery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimPe.Plugin.3d.simpe">
+      <LogicalName>SimPe.Plugin.3d.simpe</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimPe.Plugin.bin.simpe">
+      <LogicalName>SimPe.Plugin.bin.simpe</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network.png">
+      <LogicalName>SimPe.Plugin.Network.png</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

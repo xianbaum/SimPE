@@ -54,7 +54,11 @@
   </Folder>
   <Project Path="AdvancedForms/AdvancedForms.csproj" />
   <Project Path="PrimitiveWizards/PrimitiveWizards.csproj" />
+  <Project Path="ActionDeleteSim/ActionDeleteSim.csproj" />
   <Project Path="ColorBinningTool/ColorBinningTool.csproj" />
+  <Project Path="OrphanMeshScanner/OrphanMeshScanner.csproj" />
+  <Project Path="SimClothingEditor/SimClothingEditor.csproj" />
+  <Project Path="SimSurgery/SimSurgery.csproj" />
   <Project Path="GDF/GDF.csproj" />
   <Project Path="GraphControl/GraphControl.csproj" />
   <Project Path="NetDocks/NetDocks.csproj" />
