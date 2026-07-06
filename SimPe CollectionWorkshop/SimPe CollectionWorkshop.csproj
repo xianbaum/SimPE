@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>simpe.collworkshop.plugin</AssemblyName>
+    <RootNamespace>SimPe.Plugin</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../NetDocks/NetDocks.csproj" />
+    <ProjectReference Include="../GraphControl/GraphControl.csproj" />
+    <ProjectReference Include="../SimPe 3IDR/SimPe 3IDR.csproj" />
+    <ProjectReference Include="../SimPe Cache/SimPe Cache.csproj" />
+    <ProjectReference Include="../SimPe Clst/SimPe Clst.csproj" />
+    <ProjectReference Include="../SimPe Commandline/SimPe Commandline.csproj" />
+    <ProjectReference Include="../SimPe FileHandler/SimPe FileHandlers.csproj" />
+    <ProjectReference Include="../SimPe GMDC Exporter Base/SimPe GMDC Exporter Base.csproj" />
+    <ProjectReference Include="../SimPe Helper/SimPe Helper.csproj" />
+    <ProjectReference Include="../SimPe Interfaces/SimPe Interfaces.csproj" />
+    <ProjectReference Include="../SimPe Packages/SimPe Packages.csproj" />
+    <ProjectReference Include="../SimPe RCOL/SimPe RCOL.csproj" />
+    <ProjectReference Include="../SimPe Scenegraph/SimPe Scenegraph.csproj" />
+    <ProjectReference Include="../SimPE Toolbox Scanner/SimPE Toolbox Scanner.csproj" />
+    <ProjectReference Include="../SimPe Toolbox Workshops/SimPe Toolbox Workshops.csproj" />
+    <ProjectReference Include="../SimPe Toolbox/SimPe Toolbox.csproj" />
+    <ProjectReference Include="../SimPe Workspace Helper/SimPe Workspace Helper.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CollWspFactory.cs" />
+    <Compile Include="CollWspForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollWspForm.Designer.cs">
+      <DependentUpon>CollWspForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CollWspFormSave.cs" />
+    <Compile Include="CollWspFormScan.cs" />
+    <Compile Include="CollWspItem.cs" />
+    <Compile Include="CollWspScanner.cs" />
+    <Compile Include="CollWspScannerCollection.cs" />
+    <Compile Include="CollWspScannerRegistry.cs" />
+    <Compile Include="CollWspSortForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollWspSortForm.Designer.cs">
+      <DependentUpon>CollWspSortForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CollWspTool.cs" />
+    <Compile Include="CollWspUtils.cs" />
+    <Compile Include="Images.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Images.resx</DependentUpon>
+    </Compile>
+    <Compile Include="PackageCacheFile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CollWspForm.resx">
+      <DependentUpon>CollWspForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CollWspSortForm.resx">
+      <DependentUpon>CollWspSortForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

@@ -8,6 +8,9 @@
   <Folder Name="/SimPe BHAV/">
     <Project Path="SimPe BHAV/Plugin BHAV.csproj" />
   </Folder>
+  <Folder Name="/SimPe CollectionWorkshop/">
+    <Project Path="SimPe CollectionWorkshop/SimPe CollectionWorkshop.csproj" />
+  </Folder>
   <Folder Name="/SimPe Database/">
     <Project Path="SimPe Database/Plugin Database.csproj" />
   </Folder>

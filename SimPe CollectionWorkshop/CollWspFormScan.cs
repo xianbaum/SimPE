@@ -159,7 +159,7 @@ namespace SimPe.Plugin.CollWsp
               si.PackageCacheItem.Type = id.GetType( si.Package );
           }
 
-          if ( si.PackageCacheItem.Type != (collType == "clothing" ? SimPe.Cache.PackageType.Cloth : SimPe.Cache.PackageType.Object) )
+          if ( si.PackageCacheItem.Type != (collType == "clothing" ? SimPe.Cache.PackageType.Clothing : SimPe.Cache.PackageType.Object) )
             continue;
           if ( pt != si.PackageCacheItem.Type )
             cachechg = true;

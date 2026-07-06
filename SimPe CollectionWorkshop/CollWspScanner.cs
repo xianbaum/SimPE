@@ -73,7 +73,7 @@ namespace SimPe.Plugin.Scanner
 
     public void ScanPackage( ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi )
     {
-      if ( si.PackageCacheItem.Type == SimPe.Cache.PackageType.Cloth )
+      if ( si.PackageCacheItem.Type == SimPe.Cache.PackageType.Clothing )
       {
         ps.State = TriState.True;
       }
