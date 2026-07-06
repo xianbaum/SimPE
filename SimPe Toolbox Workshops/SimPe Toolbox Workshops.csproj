@@ -35,6 +35,7 @@
     <ProjectReference Include="../SimPe Workspace Helper/SimPe Workspace Helper.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionEnableFenceInOriginalGame.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="NeighborhoodPreview.cs" />
     <Compile Include="NewObjectPreview.cs" />

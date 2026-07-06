@@ -1248,6 +1248,11 @@ Do you want to continue?</value>
   <data name="Warning" xml:space="preserve">
     <value>Warning!</value>
   </data>
+  <data name="Fix_Fence_Warning" xml:space="preserve">
+    <value>Making a Fence compatible with the Original Game, is a nasty Hack, which can cause conflicts in the Game. I would not suggest to do this, if you plan to Release the Fence!
+If you still want to offer the Fence for the original Game, please consider to release it in two seperate Packages. One with the Fence for University and higher, and one for the Original Game.
+Do you really want to make this Fence compatible with the original Game?</value>
+  </data>
   <data name="[All Households]" xml:space="preserve">
     <value>[All Households]</value>
   </data>
