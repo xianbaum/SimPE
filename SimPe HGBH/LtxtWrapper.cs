@@ -71,10 +71,13 @@ namespace SimPe.Plugin
 			SecretSociety = 0x04,
             Hotel = 0x05,
             SecretHoliday = 0x06,
+            VacationHidden = 0x06, // 0.75f alias
             Hobby = 0x07,
+            HobbyHidden = 0x07,    // 0.75f alias
             ApartmentBase = 0x08,
             ApartmentSublot = 0x09,
             Witches = 0x0a,
+            WitchesHidden = 0x0a,  // 0.75f alias
             Hospital = 0x0b,
             Heaven = 0x0c,
             Hell = 0x0d,

@@ -29,7 +29,9 @@ namespace SimPe
         Apartments =        0x00010000,//16 --Flags2--
         Mansions =          0x00020000,//17
         Angels =            0x00040000,//18
+        XP18 =              0x00040000,//18 0.75f alias
         Boobs =             0x00080000,//19
+        XP19 =              0x00080000,//19 0.75f alias
         Store =             0x00100000,//20 -- May need to comment this one out again
         // Store =             0x08000000,//27 -- Store is actually 31 but that is taken
         IslandStories =     0x10000000,//28 -- SimPe stolen: beware!!
