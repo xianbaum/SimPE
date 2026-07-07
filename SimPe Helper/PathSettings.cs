@@ -18,7 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Design;
 
 namespace SimPe
 {
@@ -40,49 +42,7 @@ namespace SimPe
        
         static PathSettings CreateInstance()
         {
-            string src = "using System;\n";
-            src += "using System.ComponentModel;\n";
-            src += "namespace SimPe{\n";
-            src += "public class RuntimePathSettings : PathSettings { \n";
-            src += "\tpublic RuntimePathSettings() : base(Helper.WindowsRegistry){\n";
-            src += "\t}\n\n\n";
-
-            foreach (ExpansionItem ei in PathProvider.Global.Expansions)
-            {
-                src += "\t[Category(\"" + ei.Flag.Class + "\"), System.ComponentModel.Editor(typeof(SimPe.SelectSimFolderUITypeEditor), typeof(System.Drawing.Design.UITypeEditor)),\n";
-                src += "\tDescription(\"" + SimPe.Localization.GetString("[Description:]").Replace("{LongName}", ei.Name).Trim().Replace(Helper.lbr, "\\n") + "\"), ";
-                src += "DisplayName(\"" + ei.NameSortNumber + ": " + ei.NameShorter + "\")]\n";
-                src += "\tpublic string " + ei.ShortId + "Path\n";
-                src += "\t{\n";
-                src += "\t\tget {\n";
-                src += "\t\t\treturn GetPath(PathProvider.Global.GetExpansion(" + ei.Version + "));\n";
-                src += "\t\t}\n";
-                src += "\t\tset {PathProvider.Global.GetExpansion(" + ei.Version + ").InstallFolder = value;}\n";
-                src += "\t}\n\n";
-            }
-
-            src += "}}\n";
-
-            try
-            {
-                System.Reflection.Assembly a = SimPe.RuntimeCompiler.Compile(src, new string[] { 
-                    System.IO.Path.Combine(Helper.SimPePath, "simpe.helper.dll"), 
-                    "system.drawing.dll" });
-                return (PathSettings)SimPe.RuntimeCompiler.CreateInstance(a, "SimPe.RuntimePathSettings", new object[0]);
-            }
-            catch (Exception ex)
-            {
-                if (Helper.WindowsRegistry.HiddenMode || Helper.QARelease)
-                {
-                    System.IO.StreamWriter sw = new System.IO.StreamWriter(System.IO.Path.Combine(Helper.SimPeDataPath, "RuntimePathSettings.cs"));
-                    sw.Write(src);
-                    sw.Close();
-                    sw.Dispose();
-                    sw = null;
-                    Helper.ExceptionMessage(ex);
-                }
-                return null;
-            }
+            return new PathSettings(Helper.WindowsRegistry);
         }
 
 		protected PathSettings(Registry r)
@@ -107,11 +67,74 @@ namespace SimPe
 		[Category("BaseGame"),System.ComponentModel.Editor(typeof(SimPe.SelectSimFolderUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
 		public string SaveGamePath
 		{
-			get 
+			get
 			{
                 return GetPath(PathProvider.SimSavegameFolder, PathProvider.RealSavegamePath);
 			}
             set { PathProvider.SimSavegameFolder = value; }
 		}
+
+        protected override PropertyDescriptorCollection GetBaseProperties()
+        {
+            return AppendExpansionProperties(base.GetBaseProperties());
+        }
+
+        protected override PropertyDescriptorCollection GetBaseProperties(Attribute[] attributes)
+        {
+            return AppendExpansionProperties(base.GetBaseProperties(attributes));
+        }
+
+        static PropertyDescriptorCollection AppendExpansionProperties(PropertyDescriptorCollection baseProps)
+        {
+            List<PropertyDescriptor> props = new List<PropertyDescriptor>();
+            foreach (PropertyDescriptor pd in baseProps)
+                props.Add(pd);
+            foreach (ExpansionItem ei in PathProvider.Global.Expansions)
+                props.Add(new ExpansionPathPropertyDescriptor(ei));
+            return new PropertyDescriptorCollection(props.ToArray());
+        }
+
+        sealed class ExpansionPathPropertyDescriptor : PropertyDescriptor
+        {
+            readonly ExpansionItem ei;
+
+            internal ExpansionPathPropertyDescriptor(ExpansionItem ei)
+                : base(ei.ShortId + "Path", BuildAttributes(ei))
+            {
+                this.ei = ei;
+            }
+
+            static Attribute[] BuildAttributes(ExpansionItem ei)
+            {
+                string description = SimPe.Localization.GetString("[Description:]")
+                    .Replace("{LongName}", ei.Name).Trim();
+                return new Attribute[]
+                {
+                    new CategoryAttribute(ei.Flag.Class.ToString()),
+                    new DisplayNameAttribute(ei.NameSortNumber + ": " + ei.NameShorter),
+                    new DescriptionAttribute(description),
+                    new EditorAttribute(typeof(SelectSimFolderUITypeEditor), typeof(UITypeEditor)),
+                };
+            }
+
+            public override Type ComponentType { get { return typeof(PathSettings); } }
+            public override Type PropertyType { get { return typeof(string); } }
+            public override bool IsReadOnly { get { return false; } }
+
+            public override object GetValue(object component)
+            {
+                return ((PathSettings)component).GetPath(ei);
+            }
+
+            public override void SetValue(object component, object value)
+            {
+                ei.InstallFolder = value == null ? "" : value.ToString();
+                OnValueChanged(component, EventArgs.Empty);
+            }
+
+            public override bool CanResetValue(object component) { return false; }
+            public override void ResetValue(object component) { }
+            public override bool ShouldSerializeValue(object component) { return false; }
+        }
 	}
 }

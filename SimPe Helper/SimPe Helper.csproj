@@ -64,7 +64,6 @@
     <Compile Include="PropertyObjectBuilderExt.cs" />
     <Compile Include="PropertyUserTypes.cs" />
     <Compile Include="Registry.cs" />
-    <Compile Include="RuntimeCompiler.cs" />
     <Compile Include="SelectSimFolder.cs" />
     <Compile Include="SemiGlobalAlias.cs" />
     <Compile Include="SemiGlobalListing.cs" />

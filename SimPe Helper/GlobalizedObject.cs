@@ -166,10 +166,9 @@ namespace SimPe
 					displayName = this.basePropertyDescriptor.DisplayName;
 				
 				
-				// Get the string from the resources. 
-				// If this fails, then use default empty string indictating 'no description'
+				// Get the string from the resources, or its attribute.
                 string s = resource.GetString("[Description:" + displayName + "]");
-                this.localizedDescription = (s != null) ? s : "";
+                this.localizedDescription = (s != null) ? s : this.basePropertyDescriptor.Description;
 
 				return this.localizedDescription;
 			}
@@ -276,16 +275,33 @@ namespace SimPe
 		}
 
 		/// <summary>
+		/// Gets property descriptors that <see cref="GetProperties()"/>
+		/// wraps for localization. Overrideable.
+		/// </summary>
+		protected virtual PropertyDescriptorCollection GetBaseProperties()
+		{
+			return TypeDescriptor.GetProperties(this, true);
+		}
+
+		/// <summary>
+		/// See <see cref="GetBaseProperties()"/>, but of attributes.
+		/// </summary>
+		protected virtual PropertyDescriptorCollection GetBaseProperties(Attribute[] attributes)
+		{
+			return TypeDescriptor.GetProperties(this, attributes, true);
+		}
+
+		/// <summary>
 		/// Called to get the properties of a type.
 		/// </summary>
 		/// <param name="attributes"></param>
 		/// <returns></returns>
 		public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
-			if ( globalizedProps == null) 
+			if ( globalizedProps == null)
 			{
 				// Get the collection of properties
-				PropertyDescriptorCollection baseProps = TypeDescriptor.GetProperties(this, attributes, true);
+				PropertyDescriptorCollection baseProps = GetBaseProperties(attributes);
 
 				globalizedProps = new PropertyDescriptorCollection(null);
 
@@ -301,10 +317,10 @@ namespace SimPe
 		public PropertyDescriptorCollection GetProperties()
 		{
 			// Only do once
-			if ( globalizedProps == null) 
+			if ( globalizedProps == null)
 			{
 				// Get the collection of properties
-				PropertyDescriptorCollection baseProps = TypeDescriptor.GetProperties(this, true);
+				PropertyDescriptorCollection baseProps = GetBaseProperties();
 				globalizedProps = new PropertyDescriptorCollection(null);
 
 				// For each property use a property descriptor of our own that is able to be globalized
